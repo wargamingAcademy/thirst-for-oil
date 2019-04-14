@@ -7,11 +7,11 @@ using System;
 public class ResourceTilemapData : ScriptableObject
 {
     public Resource[,] Resources { get; set; }
-    public GameObject tilemapGameobject;
-    private Tilemap tilemap;
+    public Tilemap tilemap;
     public void Initialize()
     {
-        tilemap = tilemapGameobject.GetComponent<Tilemap>();
+        GameObject tilemapGameObject = GameObject.Find(ObjectnamesConstant.RESOURCE_TILEMAP);
+        tilemap = tilemapGameObject.GetComponent<Tilemap>();
         if (tilemap == null)
         {
             throw new ArgumentNullException();
@@ -22,9 +22,9 @@ public class ResourceTilemapData : ScriptableObject
         {
             for (int y = 0; y < tilemap.size.y; y++)
             {
-                Vector2Int size = new Vector2Int();
+               /* Vector2Int size = new Vector2Int();
                 size.x = tilemap.size.x % 2 > 0 ? tilemap.size.x / 2 + 1 : tilemap.size.x / 2;
-                size.y = tilemap.size.y % 2 > 0 ? tilemap.size.y / 2 + 1 : tilemap.size.y / 2 + 1;
+                size.y = tilemap.size.y % 2 > 0 ? tilemap.size.y / 2 + 1 : tilemap.size.y / 2 + 1;*/
 
                 TileBase tileBase = tilemap.GetTile(new Vector3Int(x + bounds.position.x, y + bounds.position.y, 0));
                 if (tileBase == null)

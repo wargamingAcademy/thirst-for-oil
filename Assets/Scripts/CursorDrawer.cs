@@ -10,7 +10,8 @@ public class CursorDrawer : MonoBehaviour
     public Tilemap selectedCellTilemap;
     public Tile hoverCell;
     public Tile selectedCell;
-    private Vector2Int cursorPosition;
+    public Vector2Int cursorPosition;
+    public Vector2Int currentSelectedTile;
     private Camera camera;
     private Vector3 worldPosition;
 
@@ -26,9 +27,11 @@ public class CursorDrawer : MonoBehaviour
         worldPosition = camera.ScreenToWorldPoint(mousePos);
         cursorPosition = new Vector2Int(-(int)Math.Ceiling((bounds.min.x - worldPosition.x /*+ Constants.TILEMAP_OFFSET.x*/) / hoverCellTilemap.cellSize.x),
             -(int)Math.Ceiling((bounds.min.y - worldPosition.y /*+ Constants.TILEMAP_OFFSET.y*/) / hoverCellTilemap.cellSize.y));
+       
         hoverCellTilemap.SetTile(new Vector3Int(cursorPosition.x,cursorPosition.y,0),hoverCell);
         if (PlayerInput.Instance.CellSelected.Down)
         {
+            currentSelectedTile = cursorPosition;
             selectedCellTilemap.ClearAllTiles();
             selectedCellTilemap.SetTile(new Vector3Int(cursorPosition.x, cursorPosition.y, 0), selectedCell);
         }

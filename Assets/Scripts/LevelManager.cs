@@ -1,4 +1,5 @@
 ﻿using Gamekit2D;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,6 +20,23 @@ public class LevelManager : MonoBehaviour
     public Vector2Int offset;
 
     public GeneralBuilding buildings;
+
+
+    /// <summary>
+    /// Список всех зданий в палитре
+    /// </summary>
+    public List<TileBase> tiles;
+
+    /// <summary>
+    /// иконки всех зданий
+    /// </summary>
+    public Sprite[] sprites;
+
+    /// <summary>
+    /// палитра зданий
+    /// </summary>
+    private GameObject buildingsPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +48,23 @@ public class LevelManager : MonoBehaviour
         buildingTilemap.Initialize();
         //Construction.ConstructBuilding(new Vector2Int(1, 1), new MainBase());
         GameObject go=GameObject.Find("BuildingTilemap");
-        Tilemap t = go.GetComponent<Tilemap>();
-        TileBase ta = t.GetTile(new Vector3Int(2, 2, 0));
+
         PlayerInput.Instance.EnableButtons();
+
+        tiles = new List<TileBase>();
+        buildingsPrefab = Resources.Load<GameObject>(PathConstants.PATH_PALETTES + PathConstants.BUILDINGS);
+        sprites = Resources.LoadAll<Sprite>(PathConstants.PATH_SPRITES);
+        var tilemap = buildingsPrefab.GetComponentInChildren<Tilemap>();
+        for (int x = 0; x < tilemap.size.x; x++)
+        {
+            for (int y = 0; y < tilemap.size.y; y++)
+            {
+                TileBase tile = tilemap.GetTile(new Vector3Int(x, y, 0));
+                if (tile != null)
+                {
+                    tiles.Add(tile);
+                }
+            }
+        }
     }
 }
