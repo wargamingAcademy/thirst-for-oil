@@ -7,19 +7,24 @@ using UnityEngine.Tilemaps;
 /// <summary>
 /// Хранит общую информацию для зданий
 /// </summary>
-[CreateAssetMenu(fileName = "GeneralBuilding", menuName = "GeneralBuilding", order = 57)]
-public class GeneralBuilding:ScriptableObject
+public abstract class GeneralBuilding
 {
     /// <summary>
     /// палитра зданий
     /// </summary>
     private GameObject buildingsPrefab;
 
+    private LevelManager levelManager;
 
     /// <summary>
     /// Список всех зданий в палитре
     /// </summary>
     public List<TileBase> tiles;
+
+    public GeneralBuilding()
+    {
+        levelManager = GameObject.FindObjectOfType<LevelManager>();
+    }
     public void OnEnable()
     {
         tiles=new List<TileBase>();
@@ -36,7 +41,6 @@ public class GeneralBuilding:ScriptableObject
                 }
             }
         }
-
     }
 
     /// <summary>
@@ -55,4 +59,32 @@ public class GeneralBuilding:ScriptableObject
         }
         return null;
     }
+
+    /// <summary>
+    /// Построить здание
+    /// </summary>
+    /// <param name="coordinate">позиция строения</param>
+    /// <param name="building">здание</param>
+    /// <returns>true если успешно построили</returns>
+    public bool ConstructBuilding(Vector2Int coordinate)
+    {
+        TileBase tile = levelManager.fogeOfWarTilemap.GetTile(new Vector3Int(coordinate.x, coordinate.y, 0));
+        if (tile == null)
+        {
+            return false;
+        }
+
+        bool isFogeOfWar = tile.name == TileNames.FOGE;
+        bool isNotAvailibleBuildBuilding = !levelManager.availibleBuildingTilemap.IsAvailibleBuilding[coordinate.x, coordinate.y];
+        if ((isNotAvailibleBuildBuilding) && (isFogeOfWar))
+        {
+            return false;
+        }
+        levelManager.availibleBuildingTilemap.IsAvailibleBuilding[coordinate.x, coordinate.y] = false;
+        levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        return true;
+    }
+
+    public abstract TileBase GetTile();
+
 }
