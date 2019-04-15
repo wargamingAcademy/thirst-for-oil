@@ -17,7 +17,7 @@ public class OilRig : GeneralBuilding
         return GetSprite(TileNames.OIL_RIG);
     }
 
-    public float GetPrice()
+    public override float GetPrice()
     {
         return Prices.OIL_RIG_IN_OIL_PRICE;
     }
@@ -43,5 +43,11 @@ public class OilRig : GeneralBuilding
             }
         }
         return false;
+    }
+
+
+    public override void OnEndTurn()
+    {
+        throw new System.NotImplementedException();
     }
 }

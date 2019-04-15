@@ -10,6 +10,11 @@ public class GuardTower :GeneralBuilding
         throw new System.NotImplementedException();
     }
 
+    public override float GetPrice()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override Sprite GetSprite()
     {
         throw new System.NotImplementedException();
@@ -21,6 +26,11 @@ public class GuardTower :GeneralBuilding
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnEndTurn()
     {
         throw new System.NotImplementedException();
     }

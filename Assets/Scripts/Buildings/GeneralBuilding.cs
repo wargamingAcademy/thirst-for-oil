@@ -12,11 +12,15 @@ public abstract class GeneralBuilding
 {   
 
     protected LevelManager levelManager;
+    protected ResourceManager resourceManager;
+    protected UIController uiController;
 
 
     public GeneralBuilding()
     {
         levelManager = GameObject.FindObjectOfType<LevelManager>();
+        resourceManager = GameObject.FindObjectOfType<ResourceManager>();
+        uiController = GameObject.FindObjectOfType<UIController>();
     }
     
 
@@ -76,12 +80,16 @@ public abstract class GeneralBuilding
         }
         levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
         levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        resourceManager.Oil -= GetPrice();
+        uiController.ChangeOilBar(-GetPrice());
         return true;
     }
 
     public abstract TileBase GetTile();
     public abstract Sprite GetSprite();
     public abstract string GetDescription();
+    public abstract float GetPrice();
     public abstract bool IsCanBeBuild(Vector2Int position);
+    public abstract void OnEndTurn();
 
 }
