@@ -15,7 +15,7 @@ public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         
         generalBuilding= GetBuilding(building);
         text.text = generalBuilding.GetDescription();
-        button.image.sprite = generalBuilding.GetSprite(TileNames.OIL_RIG);
+       // button.image.sprite = generalBuilding.GetSprite(TileNames.OIL_RIG);
        
         button.onClick.AddListener(TaskOnClick); 
     }

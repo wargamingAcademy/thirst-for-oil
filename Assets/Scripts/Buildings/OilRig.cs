@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class OilRig : GeneralBuilding
 {
-
+    public const float AMOUNT_OIL_PRODUCING = 10; 
     public void Initialize()
     {
         //var textFile = Resources.Load<GameObject>(BuildingNames.PATH_BUILDING + BuildingNames.MAIN_BASE);
@@ -24,7 +24,7 @@ public class OilRig : GeneralBuilding
 
     public override string GetDescription()
     {
-        return "Добывает 5 ед. нефти в ход";
+        return "Добывает "+AMOUNT_OIL_PRODUCING+"ед. нефти в ход";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
@@ -45,6 +45,11 @@ public class OilRig : GeneralBuilding
         return false;
     }
 
+    public override void OnBuilding()
+    {
+        resourceManager.expenseOil += AMOUNT_OIL_PRODUCING;
+        uiController.ChangeOilChangeBar(resourceManager.expenseOil);
+    }
 
     public override void OnEndTurn()
     {

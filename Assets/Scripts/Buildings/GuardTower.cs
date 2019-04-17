@@ -30,6 +30,11 @@ public class GuardTower :GeneralBuilding
         throw new System.NotImplementedException();
     }
 
+    public override void OnBuilding()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void OnEndTurn()
     {
         throw new System.NotImplementedException();

@@ -12,6 +12,6 @@ public class TurnController : MonoBehaviour
     public void EndTurn()
     {
         TurnEndEvent();
-        TurnStartEvent();
+            // TurnStartEvent();
     }
 }

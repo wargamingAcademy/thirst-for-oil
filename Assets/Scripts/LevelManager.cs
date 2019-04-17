@@ -53,7 +53,7 @@ public class LevelManager : MonoBehaviour
 
         tiles = new List<TileBase>();
         buildingsPrefab = Resources.Load<GameObject>(PathConstants.PATH_PALETTES + PathConstants.BUILDINGS);
-        sprites = Resources.LoadAll<Sprite>(PathConstants.PATH_SPRITES);
+        sprites = Resources.LoadAll<Sprite>(PathConstants.PATH_SPRITES+PathConstants.BUILDINGS);
         var tilemap = buildingsPrefab.GetComponentInChildren<Tilemap>();
         for (int x = 0; x < tilemap.size.x; x++)
         {
