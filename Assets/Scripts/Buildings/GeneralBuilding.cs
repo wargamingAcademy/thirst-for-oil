@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine.Tilemaps;
 
 /// <summary>
