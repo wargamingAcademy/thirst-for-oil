@@ -47,8 +47,10 @@ public class OilRig : GeneralBuilding
 
     public override void OnBuilding()
     {
-        resourceManager.expenseOil += AMOUNT_OIL_PRODUCING;
+        resourceManager.expenseOil += AMOUNT_OIL_PRODUCING; 
+        uiController.ChangeOilBar(-Prices.OIL_RIG_IN_OIL_PRICE);
         uiController.ChangeOilChangeBar(resourceManager.expenseOil);
+        uiController.ShowPriceBuildingOnBar(Prices.OIL_RIG_IN_OIL_PRICE);
     }
 
     public override void OnEndTurn()

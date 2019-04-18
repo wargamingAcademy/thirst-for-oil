@@ -13,6 +13,7 @@ public class ResourceManager:MonoBehaviour
     public static event MethodContainer OilChangeEvent;
     public delegate void OnLoseDelegate();
     public static event OnLoseDelegate LoseEvent;
+    private float oil;
     void Start()
     {
         Oil = START_OIL;
@@ -24,12 +25,30 @@ public class ResourceManager:MonoBehaviour
     public void RecalculateResources()
     {
         
-        Oil -= expenseOil;        
+        Oil += expenseOil;        
         OilChangeEvent(expenseOil);
         if (Oil <= 0f)
         {
-            LoseEvent();
+          //  LoseEvent();
         }
     }
-    public float Oil { get; set; }
+    public float Oil
+    {
+        get { return oil;}
+        set
+        {
+            if (value < 0)
+            {
+                oil = 0;
+            }
+
+            if (value > Constants.ANCHOR_MAX_Y)
+            {
+                oil = Constants.ANCHOR_MAX_Y * 10;
+            }
+
+            oil = value;
+        }
+
+    }
 }

@@ -2,37 +2,52 @@
 using UnityEditor;
 using UnityEngine.Tilemaps;
 
-public class GuardTower :GeneralBuilding
+public class GuardTower : GeneralBuilding
 {
-
-    public override string GetDescription()
+    public void Initialize()
     {
-        throw new System.NotImplementedException();
+        //var textFile = Resources.Load<GameObject>(BuildingNames.PATH_BUILDING + BuildingNames.MAIN_BASE);
+    }
+    public override TileBase GetTile()
+    {
+        return GetTile(TileNames.GUARD_TOWER);
+    }
+    public override Sprite GetSprite()
+    {
+        return GetSprite(TileNames.GUARD_TOWER);
     }
 
     public override float GetPrice()
     {
-        throw new System.NotImplementedException();
+        return Prices.GUARD_TOWER;
     }
 
-    public override Sprite GetSprite()
+    public override string GetDescription()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override TileBase GetTile()
-    {
-        throw new System.NotImplementedException();
+        return "Защищает вас от врагов";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
     {
-        throw new System.NotImplementedException();
+
+        if (!(levelManager.resourceTilemap.Resources.GetLength(0) > position.x) ||
+            !(levelManager.resourceTilemap.Resources.GetLength(1) > position.y))
+        {
+            return false;
+        }
+        if (levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] == true)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public override void OnBuilding()
     {
-        throw new System.NotImplementedException();
+        uiController.ChangeOilBar(-Prices.GUARD_TOWER);
+        uiController.ChangeOilChangeBar(resourceManager.expenseOil);     
+        uiController.ShowPriceBuildingOnBar(Prices.GUARD_TOWER);
     }
 
     public override void OnEndTurn()

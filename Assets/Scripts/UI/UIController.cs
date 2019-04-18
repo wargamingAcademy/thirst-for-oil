@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    private const float ANCHOR_MAX_Y=0.9f;
-    private const float ANCHOR_MIN_Y = 0.06f;
+   
     [SerializeField]
     private GameObject oil;
     [SerializeField]
@@ -30,7 +29,7 @@ public class UIController : MonoBehaviour
         changeOilBarRect = changeOil.GetComponent<RectTransform>();
         priceOilBarRect = priceOil.GetComponent<RectTransform>();
         oilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, oilBarRect.anchorMin.y);
-        oilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, ANCHOR_MAX_Y * ResourceManager.START_OIL / 100);
+        oilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y * ResourceManager.START_OIL / 100);
         ChangeOilChangeBar(ResourceManager.EXPENSE_OIL);
         ResourceManager.OilChangeEvent += ChangeOilBar;
         ResourceManager.OilChangeEvent += ChangeOilChangeBar;
@@ -40,11 +39,29 @@ public class UIController : MonoBehaviour
     public  void ChangeOilBar(float percent)
     {
         oilBarRect = oil.GetComponent<RectTransform>();
-        oilBarRect.anchorMax=new Vector2(oilBarRect.anchorMax.x, oilBarRect.anchorMax.y+ ANCHOR_MAX_Y *percent/100);
-        changeOilBarRect.anchorMax=new Vector2(changeOilBarRect.anchorMax.x,changeOilBarRect.anchorMax.y + ANCHOR_MAX_Y * percent / 100);
-        changeOilBarRect.anchorMin = new Vector2(changeOilBarRect.anchorMin.x, changeOilBarRect.anchorMin.y + ANCHOR_MAX_Y * percent / 100);
-        priceOilBarRect.anchorMax = new Vector2(priceOilBarRect.anchorMax.x, priceOilBarRect.anchorMax.y + ANCHOR_MAX_Y * percent / 100);
-        priceOilBarRect.anchorMin = new Vector2(priceOilBarRect.anchorMin.x, priceOilBarRect.anchorMin.y + ANCHOR_MAX_Y * percent / 100);
+        if (oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MAX_Y)
+        {
+            oilBarRect.anchorMax =
+                new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y);
+        }
+        else
+        {
+            oilBarRect.anchorMax =
+                new Vector2(oilBarRect.anchorMax.x, oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100);
+        }
+
+        if (changeOilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MAX_Y)
+        {
+            changeOilBarRect.anchorMax = new Vector2(changeOilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y);
+        }
+        else
+        {
+            changeOilBarRect.anchorMax = new Vector2(changeOilBarRect.anchorMax.x, changeOilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100);
+        }
+       
+        changeOilBarRect.anchorMin = new Vector2(changeOilBarRect.anchorMin.x, changeOilBarRect.anchorMin.y + Constants.ANCHOR_MAX_Y * percent / 100);
+        priceOilBarRect.anchorMax = new Vector2(priceOilBarRect.anchorMax.x, priceOilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100);
+        priceOilBarRect.anchorMin = new Vector2(priceOilBarRect.anchorMin.x, priceOilBarRect.anchorMin.y + Constants.ANCHOR_MAX_Y * percent / 100);
     }
 
     public void ChangeOilChangeBar(float percent)
@@ -53,14 +70,39 @@ public class UIController : MonoBehaviour
         if (percent >= 0)
         {
             imageChangeOil.sprite = positiveChangeOilBarSprite;
-            changeOilBarRect.anchorMin=new Vector2(oilBarRect.anchorMin.x,oilBarRect.anchorMax.y);
-            changeOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, oilBarRect.anchorMax.y + ANCHOR_MAX_Y * percent / 100);
+            if (oilBarRect.anchorMax.y < Constants.ANCHOR_MIN_Y)
+            {
+                changeOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, Constants.ANCHOR_MIN_Y);
+            }
+            else
+            {
+                changeOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, oilBarRect.anchorMax.y);
+            }
+            
+            if (oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MAX_Y)
+            {
+                changeOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y);
+            }
+            else
+            {
+                changeOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100);
+            }
+
+            
         }
         else
         {
             imageChangeOil.sprite = negativeChangeOilBarSprite;
             changeOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, oilBarRect.anchorMax.y);
-            changeOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, oilBarRect.anchorMax.y + ANCHOR_MAX_Y * percent / 100);
+            if (oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100 < Constants.ANCHOR_MIN_Y)
+            {
+                changeOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, Constants.ANCHOR_MIN_Y);
+            }
+            else
+            {
+                changeOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,
+                    oilBarRect.anchorMax.y + Constants.ANCHOR_MAX_Y * percent / 100);
+            }
         }
     }
 
@@ -70,27 +112,27 @@ public class UIController : MonoBehaviour
         if (changeOilBarRect.anchorMax.y > oilBarRect.anchorMax.y)
         {
             priceOilBarRect.anchorMax =new Vector2(oilBarRect.anchorMax.x,oilBarRect.anchorMax.y);
-            if (oilBarRect.anchorMax.y - ANCHOR_MAX_Y * percent / 100 > ANCHOR_MIN_Y)
+            if (oilBarRect.anchorMax.y - Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MIN_Y)
             {
                 priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,
-                    oilBarRect.anchorMax.y - ANCHOR_MAX_Y * percent / 100);
+                    oilBarRect.anchorMax.y - Constants.ANCHOR_MAX_Y * percent / 100);
             }
             else
             {
-                priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,ANCHOR_MIN_Y);
+                priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, Constants.ANCHOR_MIN_Y);
             }
         }
         else
         {
             priceOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, changeOilBarRect.anchorMin.y);
-            if (changeOilBarRect.anchorMin.y - ANCHOR_MAX_Y * percent / 100 > ANCHOR_MIN_Y)
+            if (changeOilBarRect.anchorMin.y - Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MIN_Y)
             {
                 priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,
-                    changeOilBarRect.anchorMin.y - ANCHOR_MAX_Y * percent / 100);
+                    changeOilBarRect.anchorMin.y - Constants.ANCHOR_MAX_Y * percent / 100);
             }
             else
             {
-                priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, ANCHOR_MIN_Y);
+                priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, Constants.ANCHOR_MIN_Y);
             }
         }
     }
