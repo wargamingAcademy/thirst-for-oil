@@ -45,9 +45,7 @@ public class GuardTower : GeneralBuilding
 
     public override void OnBuilding()
     {
-        uiController.ChangeOilBar(-Prices.GUARD_TOWER);
-        uiController.ChangeOilChangeBar(resourceManager.expenseOil);     
-        uiController.ShowPriceBuildingOnBar(Prices.GUARD_TOWER);
+        
     }
 
     public override void OnEndTurn()

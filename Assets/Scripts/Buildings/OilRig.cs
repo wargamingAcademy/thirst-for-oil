@@ -47,10 +47,13 @@ public class OilRig : GeneralBuilding
 
     public override void OnBuilding()
     {
-        resourceManager.expenseOil += AMOUNT_OIL_PRODUCING; 
-        uiController.ChangeOilBar(-Prices.OIL_RIG_IN_OIL_PRICE);
-        uiController.ChangeOilChangeBar(resourceManager.expenseOil);
-        uiController.ShowPriceBuildingOnBar(Prices.OIL_RIG_IN_OIL_PRICE);
+        ModificatorManager.Instance.RegisterResourceModificator(new OilRigResModificator());
+        var modificator =(OilRigResModificator) ModificatorManager.Instance.GetResourceModificator(new OilRigResModificator());
+        resourceManager.IncomeOil +=modificator.GetOilIncome(AMOUNT_OIL_PRODUCING); 
+       
+      /*  uiController.SetOilBarValue(-Prices.OIL_RIG_IN_OIL_PRICE);
+        uiController.ChangeOilChangeBar(resourceManager.incomeOil);
+        uiController.ShowPriceBuildingOnBar(Prices.OIL_RIG_IN_OIL_PRICE);*/
     }
 
     public override void OnEndTurn()
