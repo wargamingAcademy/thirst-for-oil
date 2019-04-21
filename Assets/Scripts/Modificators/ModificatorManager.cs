@@ -33,6 +33,7 @@ public class ModificatorManager : MonoBehaviour
         resModificator.Initialize();
         resourceModificators.Add(resModificator);
     }
+
    public IResourceModificator GetResourceModificator(IResourceModificator modificator)
     {
         foreach (var resourceModificator in resourceModificators)
@@ -42,6 +43,8 @@ public class ModificatorManager : MonoBehaviour
                 return resourceModificator;
             }
         }
-        return null;
+        modificator.Initialize();
+        resourceModificators.Add(modificator);
+        return modificator;
     }
 }
