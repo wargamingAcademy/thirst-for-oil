@@ -4,6 +4,9 @@ using UnityEngine.Tilemaps;
 using System;
 using Gamekit2D;
 
+/// <summary>
+/// Скрипт отвечающий за отрисовку квадратного курсора на карте
+/// </summary>
 public class CursorDrawer : MonoBehaviour
 {
     public Tilemap hoverCellTilemap;
@@ -36,14 +39,4 @@ public class CursorDrawer : MonoBehaviour
             selectedCellTilemap.SetTile(new Vector3Int(cursorPosition.x, cursorPosition.y, 0), selectedCell);
         }
     }
-   /* void OnGUI()
-    {
-        Bounds bounds = hoverCellTilemap.localBounds;
-        Vector2 mousePos = Input.mousePosition;
-        GUI.Label(new Rect(30f, 440.0f, 200.0f, 25.0f), cursorPosition.x + "  " + cursorPosition.y);
-        GUI.Label(new Rect(30f, 470.0f, 200.0f, 25.0f), worldPosition.x + "  " + worldPosition.y);
-        GUI.Label(new Rect(30f, 500.0f, 200.0f, 25.0f), bounds.min.x + "  " + bounds.min.y);
-        GUI.Label(new Rect(30f, 530.0f, 200.0f, 25.0f), mousePos.x + "  " + mousePos.y);
-        GUI.Label(new Rect(30f, 560.0f, 200.0f, 25.0f), hoverCellTilemap.cellSize.x + "  " + hoverCellTilemap.cellSize.y);
-    }*/
 }

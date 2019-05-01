@@ -1,7 +1,10 @@
 ﻿using Gamekit2D;
 using UnityEngine;
-using UnityEditor;
+//Временное решение
 
+/// <summary>
+/// Скрипт для выхода из игры
+/// </summary>
 public class WaitExit : MonoBehaviour
 {
     void Update()

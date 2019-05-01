@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "AvailibleBuildingTilemap", menuName = "AvailibleBuildingTilemap", order = 55)]
-public class AvailibleBuildingTilemap : ScriptableObject
+/// <summary>
+/// Карта мест на карте где можно строить здания
+/// </summary>
+[CreateAssetMenu(fileName = "AvailibleBuildingData", menuName = "AvailibleBuildingData", order = 55)]
+public class AvailibleBuildingData : ScriptableObject
 {
     public bool[,] IsAvailibleBuilding;
     private Tilemap tilemap;

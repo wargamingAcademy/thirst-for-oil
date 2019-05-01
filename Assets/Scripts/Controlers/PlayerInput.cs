@@ -1,11 +1,8 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Tilemaps;
+﻿using UnityEngine;
 
 namespace Gamekit2D
 {
-    public class PlayerInput :InputComponent//, IDataPersister
+    public class PlayerInput :InputComponent
     {
 
         public static PlayerInput Instance

@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Скрипт для отслеживания наведения мышки на интерфейс
+/// </summary>
 public class InterfaceInteraction : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
 {
     public void OnPointerEnter(PointerEventData eventData)

@@ -3,54 +3,21 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// Хранит общую информацию для зданий
+/// Базовый класс хранящий информацию о зданиях
 /// </summary>
 public abstract class GeneralBuilding
 {
-    protected UIController uiController;
+    protected UIOilController uiController;
     protected LevelManager levelManager;
     protected ResourceManager resourceManager;
    
-
-
     public GeneralBuilding()
     {
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         resourceManager = GameObject.FindObjectOfType<ResourceManager>();
-        uiController = GameObject.FindObjectOfType<UIController>();
-
+        uiController = GameObject.FindObjectOfType<UIOilController>();
     }
-    
-
-    /// <summary>
-    /// Ищем тайл по имени
-    /// </summary>
-    /// <param name="name">имя спрайта</param>
-    /// <returns></returns>
-    public Tile  GetTile(string name)
-    {
-        foreach (Tile tile in levelManager.tiles)
-        {
-            if (tile.name == name)
-            {
-                return tile;
-            }
-        }
-        throw new FileNotFoundException("Спрайт не найден");
-    }
-
-    public Sprite GetSprite(string name)
-    {
-        foreach (Sprite sprite in levelManager.sprites)
-        {
-            if (sprite.name == name)
-            {
-                return sprite;
-            }
-        }
-        return null;
-    }
-
+      
     /// <summary>
     /// Построить здание
     /// </summary>
@@ -59,18 +26,6 @@ public abstract class GeneralBuilding
     /// <returns>true если успешно построили</returns>
     public bool ConstructBuilding(Vector2Int coordinate)
     {
-        /*TileBase tile = levelManager.fogeOfWarTilemap.GetTile(new Vector3Int(coordinate.x, coordinate.y, 0));
-        if (tile == null)
-        {
-            return false;
-        }
-
-        bool isFogeOfWar = tile.name == TileNames.FOGE;
-        bool isNotAvailibleBuildBuilding = !levelManager.availibleBuildingTilemap.IsAvailibleBuilding[coordinate.x, coordinate.y];
-        if ((isNotAvailibleBuildBuilding) && (isFogeOfWar))
-        {
-            return false;
-        }*/
         Vector2Int position = new Vector2Int(coordinate.x - levelManager.resourceTilemap.tilemap.cellBounds.min.x, coordinate.y - levelManager.resourceTilemap.tilemap.cellBounds.min.y);
         if (!IsCanBeBuild(position))
         {
@@ -93,10 +48,31 @@ public abstract class GeneralBuilding
 
     public abstract TileBase GetTile();
     public abstract Sprite GetSprite();
+
+    /// <summary>
+    /// Получить описание здания 
+    /// </summary>
     public abstract string GetDescription();
+
+    /// <summary>
+    /// Стоимость здания в нефти
+    /// </summary>
     public abstract float GetPrice();
+
+    /// <summary>
+    /// Возвращает true если здание может быть построено
+    /// </summary>
+    /// <param name="position">позиция строящегося здания на tilemap</param>
     public abstract bool IsCanBeBuild(Vector2Int position);
+
+    /// <summary>
+    /// Действие которое производит здание в конце хода
+    /// </summary>
     public abstract void OnEndTurn();
+
+    /// <summary>
+    /// Действие выполняемое зданием сразу после строительства
+    /// </summary>
     public abstract void OnBuilding();
 
 }

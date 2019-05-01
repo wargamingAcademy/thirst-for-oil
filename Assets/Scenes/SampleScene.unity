@@ -1981,6 +1981,7 @@ GameObject:
   - component: {fileID: 1254667676}
   - component: {fileID: 1254667677}
   - component: {fileID: 1254667678}
+  - component: {fileID: 1254667679}
   m_Layer: 0
   m_Name: Library
   m_TagString: Untagged
@@ -2016,7 +2017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availibleBuildingTilemap: {fileID: 11400000, guid: 236f047649d22d7429577de481963d1a,
     type: 2}
-  resourceTilemap: {fileID: 11400000, guid: 79b8831756ec2634c8c6f874b8f61fef, type: 2}
+  resourceTilemap: {fileID: 11400000, guid: a94d40f36ea368848a292895fd05cbf5, type: 2}
   gridTilemap: {fileID: 11400000, guid: b0f26bd081866d64591430e2e199b96d, type: 2}
   fogeOfWarTilemap: {fileID: 0}
   buildingTilemap: {fileID: 11400000, guid: c7abc59f231d8334eb00c1937b3b43ca, type: 2}
@@ -2049,7 +2050,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiController: {fileID: 1254667676}
-  expenseOil: 0
 --- !u!114 &1254667676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2103,6 +2103,10 @@ MonoBehaviour:
     key: 0
     controllerButton: 0
     m_Enabled: 0
+  Exit:
+    key: 0
+    controllerButton: 0
+    m_Enabled: 0
 --- !u!114 &1254667678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2121,6 +2125,18 @@ MonoBehaviour:
   selectedCell: {fileID: 11400000, guid: 69bc6fc6e2b7e114d87cff221edcc748, type: 2}
   cursorPosition: {x: 0, y: 0}
   currentSelectedTile: {x: 0, y: 0}
+--- !u!114 &1254667679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254667671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09dfc51f88a7744ebd4567b36ad4792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1516589133
 GameObject:
   m_ObjectHideFlags: 0

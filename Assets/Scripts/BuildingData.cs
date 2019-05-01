@@ -1,10 +1,12 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "BuildingTilemap", menuName = "BuildingTilemap", order = 52)]
-public class BuildingTilemap : ScriptableObject
+/// <summary>
+/// хранит информацию о построенных зданиях
+/// </summary>
+[CreateAssetMenu(fileName = "BuildingData", menuName = "BuildingData", order = 52)]
+public class BuildingData : ScriptableObject
 {
     private Tilemap tilemap;
     public void Initialize()
@@ -13,6 +15,7 @@ public class BuildingTilemap : ScriptableObject
         tilemap = tilemapGameObject.GetComponent<Tilemap>();
         //tilemap.ClearAllTiles();
     }
+
     public Building[,] Buildings
     {
         get
@@ -33,6 +36,5 @@ public class BuildingTilemap : ScriptableObject
     public void SetTile(Vector3Int position,TileBase tile)
     {
         tilemap.SetTile(position,tile);
-        //  tilemap.RefreshAllTiles();
     }
 }

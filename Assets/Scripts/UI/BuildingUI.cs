@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
     public Building building;
-    public UIController uiController;
+    public UIOilController uiController;
     private GeneralBuilding generalBuilding;
     public void Start()
     {
@@ -15,17 +15,25 @@ public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         
         generalBuilding= GetBuilding(building);
         text.text = generalBuilding.GetDescription();
-       // button.image.sprite = generalBuilding.GetSprite(TileNames.OIL_RIG);
        
         button.onClick.AddListener(TaskOnClick); 
     }
 
+    /// <summary>
+    /// Событие нажатия на кнопку строительства 
+    /// </summary>
     public void TaskOnClick()
     {
         CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
 
         generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);
     }
+
+    /// <summary>
+    /// TODO:переделать
+    /// </summary>
+    /// <param name="building"></param>
+    /// <returns></returns>
     public GeneralBuilding GetBuilding(Building building)
     {
         switch (building)
@@ -38,7 +46,7 @@ public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        uiController.ShowPriceBuildingOnBar(generalBuilding.GetPrice());
+        uiController.ShowPriceBuildingOnBar(generalBuilding.GetPrice()*Constants.ANCHOR_MAX_Y/100);
     }
 
     public void OnPointerExit(PointerEventData eventData)

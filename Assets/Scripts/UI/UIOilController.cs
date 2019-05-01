@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
-{
-   
+/// <summary>
+/// Класс отвечающий за графическое отображение нефти в колбе
+/// </summary>
+public class UIOilController : MonoBehaviour
+{   
     [SerializeField]
     private GameObject oil;
     [SerializeField]
@@ -20,6 +22,7 @@ public class UIController : MonoBehaviour
     private RectTransform oilBarRect;
     private RectTransform incomeOilBarRect;
     private RectTransform priceOilBarRect;
+
     public void Awake()
     {
         imageChangeOil = changeOil.GetComponent<Image>();
@@ -29,17 +32,20 @@ public class UIController : MonoBehaviour
         incomeOilBarRect = changeOil.GetComponent<RectTransform>();
         priceOilBarRect = priceOil.GetComponent<RectTransform>();
         oilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x, oilBarRect.anchorMin.y);
-      //  oilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y * ResourceManager.START_OIL / 100);
         ResourceManager.OilChangeEvent += SetOilBarValue;
-        ResourceManager.OilChangeEvent += SetIncomeOilBarValue;
         ResourceManager.IncomeChangeEvent += SetIncomeOilBarValue;
         SetIncomeOilBarValue(ResourceManager.EXPENSE_OIL/ResourceManager.MAX_OIL);
         priceOil.SetActive(false);
     }
 
+    /// <summary>
+    /// Установить основной уровень нефти
+    /// </summary>
+    /// <param name="normalizedPercent">нормализованный процент от 0 до 1</param>
     public  void SetOilBarValue(float normalizedPercent)
     {
         oilBarRect = oil.GetComponent<RectTransform>();
+        float oilMax = oilBarRect.anchorMax.y;
         if (Constants.ANCHOR_MAX_Y * normalizedPercent > Constants.ANCHOR_MAX_Y)
         {
             oilBarRect.anchorMax =
@@ -54,23 +60,12 @@ public class UIController : MonoBehaviour
         float min = incomeOilBarRect.anchorMin.y;
         float max= incomeOilBarRect.anchorMax.y;
         float difference = max - min;
-        if (difference > 0)
+        if (min < oilMax)
         {
-            if (oilBarRect.anchorMax.y + difference > Constants.ANCHOR_MAX_Y)
-            {
-                incomeOilBarRect.anchorMax = new Vector2(incomeOilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y);
-            }
-            else
-            {
-                incomeOilBarRect.anchorMax = new Vector2(incomeOilBarRect.anchorMax.x, oilBarRect.anchorMax.y + difference);
-            }
-            incomeOilBarRect.anchorMin = oilBarRect.anchorMax;
+            difference = -difference;
         }
-        else
-        {
-            incomeOilBarRect.anchorMax = oilBarRect.anchorMax;
-            incomeOilBarRect.anchorMin = new Vector2(incomeOilBarRect.anchorMin.x, incomeOilBarRect.anchorMin.y + difference);
-        }
+        SetIncomeOilBarValue(difference);
+
         min = priceOilBarRect.anchorMin.y;
         max = priceOilBarRect.anchorMax.y;
         difference = max - min;
@@ -86,6 +81,10 @@ public class UIController : MonoBehaviour
        
     }
 
+    /// <summary>
+    /// Установить уровень прироста нефти
+    /// </summary>
+    /// <param name="normalizedPercent">нормализованный процент от 0 до 1</param>
     public void SetIncomeOilBarValue(float normalizedPercent)
     {
         incomeOilBarRect = changeOil.GetComponent<RectTransform>();
@@ -119,16 +118,20 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void ShowPriceBuildingOnBar(float percent)
+    /// <summary>
+    /// Установить уровень стоимости здания
+    /// </summary>
+    /// <param name="normalizedPercent">нормализованный процент от 0 до 1</param>
+    public void ShowPriceBuildingOnBar(float normalizedPercent)
     {
         priceOil.SetActive(true);
         if (incomeOilBarRect.anchorMax.y > oilBarRect.anchorMax.y)
         {
             priceOilBarRect.anchorMax =new Vector2(oilBarRect.anchorMax.x,oilBarRect.anchorMax.y);
-            if (oilBarRect.anchorMax.y - Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MIN_Y)
+            if (oilBarRect.anchorMax.y - normalizedPercent> Constants.ANCHOR_MIN_Y)
             {
                 priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,
-                    oilBarRect.anchorMax.y - Constants.ANCHOR_MAX_Y * percent / 100);
+                    oilBarRect.anchorMax.y - normalizedPercent);
             }
             else
             {
@@ -138,10 +141,10 @@ public class UIController : MonoBehaviour
         else
         {
             priceOilBarRect.anchorMax = new Vector2(oilBarRect.anchorMax.x, incomeOilBarRect.anchorMin.y);
-            if (incomeOilBarRect.anchorMin.y - Constants.ANCHOR_MAX_Y * percent / 100 > Constants.ANCHOR_MIN_Y)
+            if (incomeOilBarRect.anchorMin.y - normalizedPercent > Constants.ANCHOR_MIN_Y)
             {
                 priceOilBarRect.anchorMin = new Vector2(oilBarRect.anchorMin.x,
-                    incomeOilBarRect.anchorMin.y - Constants.ANCHOR_MAX_Y * percent / 100);
+                    incomeOilBarRect.anchorMin.y - normalizedPercent);
             }
             else
             {
@@ -150,6 +153,9 @@ public class UIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Скрыть уровень стоимости здания
+    /// </summary>
     public void HidePriceBuildingOnBar()
     {
         priceOil.SetActive(false);

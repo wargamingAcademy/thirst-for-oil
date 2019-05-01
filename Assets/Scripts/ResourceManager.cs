@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 
-
+/// <summary>
+/// Класс отвечающий за управление ресурсами (пока только нефтью)
+/// </summary>
 public class ResourceManager:MonoBehaviour
 {
     public static ResourceManager Instance => instance;
     static ResourceManager instance;
 
     [SerializeField]
-    private UIController uiController;
+    private UIOilController uiController;
     public const float EXPENSE_OIL = -10f;
     public const float START_OIL = 50f;
     public const float MAX_OIL = 100f;
@@ -34,14 +36,13 @@ public class ResourceManager:MonoBehaviour
         TurnController.TurnEndEvent += RecalculateResources;
         Oil = START_OIL;
         IncomeOil = EXPENSE_OIL;
-        //OilChangeEvent(oil);
     }
 
     public void RecalculateResources()
     {
         
         Oil += IncomeOil;        
-        OilChangeEvent(IncomeOil);
+        OilChangeEvent(Oil*Constants.ANCHOR_MAX_Y/100);
         if (Oil <= 0f)
         {
           //  LoseEvent();
@@ -62,9 +63,6 @@ public class ResourceManager:MonoBehaviour
         get { return oil;}
         set
         {           
-           /* uiController.SetOilBarValue(-Prices.GUARD_TOWER);
-            uiController.ChangeOilChangeBar(resourceManager.expenseOil);
-            uiController.ShowPriceBuildingOnBar(Prices.GUARD_TOWER);*/
             if (value < 0)
             {
                 oil = 0;
