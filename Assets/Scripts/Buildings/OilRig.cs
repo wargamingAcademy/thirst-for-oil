@@ -4,17 +4,14 @@ using UnityEngine.Tilemaps;
 public class OilRig : GeneralBuilding
 {
     public const float AMOUNT_OIL_PRODUCING = 10; 
-    public void Initialize()
-    {
-        //var textFile = Resources.Load<GameObject>(BuildingNames.PATH_BUILDING + BuildingNames.MAIN_BASE);
-    }
+
     public override TileBase GetTile()
     {
-       return GetTile(TileNames.OIL_RIG);
+       return levelManager.GetTile(TileNames.OIL_RIG);
     }
     public override Sprite GetSprite()
     {
-        return GetSprite(TileNames.OIL_RIG);
+        return levelManager.GetSprite(TileNames.OIL_RIG);
     }
 
     public override float GetPrice()
@@ -47,10 +44,9 @@ public class OilRig : GeneralBuilding
 
     public override void OnBuilding()
     {
-        resourceManager.expenseOil += AMOUNT_OIL_PRODUCING; 
-        uiController.ChangeOilBar(-Prices.OIL_RIG_IN_OIL_PRICE);
-        uiController.ChangeOilChangeBar(resourceManager.expenseOil);
-        uiController.ShowPriceBuildingOnBar(Prices.OIL_RIG_IN_OIL_PRICE);
+        ModificatorManager.Instance.RegisterResourceModificator(new OilRigResModificator());
+        var modificator =(OilRigResModificator) ModificatorManager.Instance.GetResourceModificator(new OilRigResModificator());
+        resourceManager.IncomeOil +=modificator.GetOilIncome(AMOUNT_OIL_PRODUCING); 
     }
 
     public override void OnEndTurn()

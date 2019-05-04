@@ -1,15 +1,19 @@
 ﻿using Gamekit2D;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// класс хранящий основную информацию об уровне
+/// </summary>
 public class LevelManager : MonoBehaviour
 {
-    public AvailibleBuildingTilemap availibleBuildingTilemap;
-    public ResourceTilemapData resourceTilemap;
+    public AvailibleBuildingData availibleBuildingTilemap;
+    public ResourceData resourceTilemap;
     public GridTilemap gridTilemap;
     public Tilemap fogeOfWarTilemap;
-    public BuildingTilemap buildingTilemap;
+    public BuildingData buildingTilemap;
 
     /// <summary>
     /// ширина клетки тайлмапа в еденицах unity
@@ -44,9 +48,7 @@ public class LevelManager : MonoBehaviour
         availibleBuildingTilemap.Initialize(worldSize);
         resourceTilemap.Initialize();
         gridTilemap.Initialize(worldSize,offset);
-       // buildings.Initialize();
         buildingTilemap.Initialize();
-        //Construction.ConstructBuilding(new Vector2Int(1, 1), new MainBase());
         GameObject go=GameObject.Find("BuildingTilemap");
 
         PlayerInput.Instance.EnableButtons();
@@ -66,5 +68,39 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Ищем тайл по имени
+    /// </summary>
+    /// <param name="name">имя тайла</param>
+    /// <returns></returns>
+    public Tile GetTile(string name)
+    {
+        foreach (Tile tile in tiles)
+        {
+            if (tile.name == name)
+            {
+                return tile;
+            }
+        }
+        throw new FileNotFoundException("Спрайт не найден");
+    }
+
+    /// <summary>
+    /// Ищем спрайт по имени
+    /// </summary>
+    /// <param name="name">имя спрайта</param>
+    /// <returns></returns>
+    public Sprite GetSprite(string name)
+    {
+        foreach (Sprite sprite in sprites)
+        {
+            if (sprite.name == name)
+            {
+                return sprite;
+            }
+        }
+        return null;
     }
 }

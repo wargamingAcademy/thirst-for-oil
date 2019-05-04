@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Gamekit2D
 {
+    //взято из примеров игр с оф. сайта unity
+
+    /// <summary>
+    /// Компонент пользовательского ввода
+    /// </summary>
     public abstract class InputComponent : MonoBehaviour
     {
         public enum InputType

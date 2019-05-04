@@ -4,22 +4,18 @@ using UnityEngine.Tilemaps;
 
 public class GuardTower : GeneralBuilding
 {
-    public void Initialize()
-    {
-        //var textFile = Resources.Load<GameObject>(BuildingNames.PATH_BUILDING + BuildingNames.MAIN_BASE);
-    }
     public override TileBase GetTile()
     {
-        return GetTile(TileNames.GUARD_TOWER);
+        return levelManager.GetTile(TileNames.GUARD_TOWER);
     }
     public override Sprite GetSprite()
     {
-        return GetSprite(TileNames.GUARD_TOWER);
+        return levelManager.GetSprite(TileNames.GUARD_TOWER);
     }
 
     public override float GetPrice()
     {
-        return Prices.GUARD_TOWER;
+        return Prices.GUARD_TOWER_PRICE;
     }
 
     public override string GetDescription()
@@ -45,9 +41,7 @@ public class GuardTower : GeneralBuilding
 
     public override void OnBuilding()
     {
-        uiController.ChangeOilBar(-Prices.GUARD_TOWER);
-        uiController.ChangeOilChangeBar(resourceManager.expenseOil);     
-        uiController.ShowPriceBuildingOnBar(Prices.GUARD_TOWER);
+        
     }
 
     public override void OnEndTurn()
