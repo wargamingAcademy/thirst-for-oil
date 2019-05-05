@@ -7,10 +7,13 @@ using PoolsManagement;
 public class TaskShortInfoWidget : PoolableObject
 {
     public int index => _index;
+
+#pragma warning disable CS0649
     [SerializeField]
     TMP_Text _Text;
     [SerializeField]
     Button _button;
+#pragma warning restore CS0649
 
     int _index;
     ITask _task;

@@ -10,7 +10,7 @@ public class TaskTEster : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.AddComponent<TaskManager>().Initialize();
+       // gameObject.AddComponent<TaskManager>().Initialize();
     }
 
     [ContextMenu("AddTask")]

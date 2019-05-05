@@ -6,19 +6,21 @@ using TMPro;
 
 public class BasicTaskWidget : PoolableObject
 {
+#pragma warning disable CS0649
     [SerializeField]
     Transform _answersContainer;
     [SerializeField]
     TMP_Text _taskName;
     [SerializeField]
     TMP_Text _taskDescription;
+#pragma warning restore CS0649
 
     BasicTask _task;
     List<TaskAnswerOption> _answerOptions = new List<TaskAnswerOption>();
 
     TaskAnswerOption CreateAnswerOption(int index, AnswerOptionSet answerOptionSet)
     {
-        TaskAnswerOption answerOption = answerOptionSet.poolSet.GetNewObject(_answersContainer) as TaskAnswerOption;
+        var answerOption = answerOptionSet.poolSet.GetNewObject(_answersContainer) as TaskAnswerOption;
         answerOption.SetValues(index, answerOptionSet.text);
         answerOption.OnClickSubscribe(OptionSelected);
 
@@ -40,40 +42,41 @@ public class BasicTaskWidget : PoolableObject
         _taskName.text = _task.GetTaskName();
         _taskDescription.text = _task.GetTaskDescription();
 
-        AnswerOptionSet[] answerOptions = _task.GetAnswerOptions();
+        AnswerOptionSet[] answerOptionsSets = _task.GetAnswerOptions();
 
-        int deltaCount = _answerOptions.Count - answerOptions.Length;
+        int deltaCount = _answerOptions.Count - answerOptionsSets.Length;
         if (deltaCount > 0)
         {
-            for (int i = _answerOptions.Count - 1; i >= answerOptions.Length; i--)
+            for (int i = _answerOptions.Count - 1; i >= answerOptionsSets.Length; i--)
                 _answerOptions[i].ReturnToPool();
-            _answerOptions.RemoveRange(answerOptions.Length, deltaCount);
+            _answerOptions.RemoveRange(answerOptionsSets.Length, deltaCount);
         }
             
 
-        for (int i = 0; i < answerOptions.Length; i++)
+        for (int i = 0; i < answerOptionsSets.Length; i++)
         {
             TaskAnswerOption answerOption;
             if (i < _answerOptions.Count)
             {
                 answerOption = _answerOptions[i];
-                if (answerOption.GetPoolSet().KeyHash != answerOptions[i].poolSet.KeyHash)
+                if (answerOption.GetPoolSet().KeyHash != answerOptionsSets[i].poolSet.KeyHash)
                 {
                     answerOption.ReturnToPool();
 
-                    answerOption = CreateAnswerOption(i, answerOptions[i]);
+                    answerOption = CreateAnswerOption(i, answerOptionsSets[i]);
                     _answerOptions[i] = answerOption;
                 }
                 else
                 {
-                    answerOption.SetValues(i, answerOptions[i].text);
+                    answerOption.SetValues(i, answerOptionsSets[i].text);
                 }
             }
             else
             {
-                answerOption = CreateAnswerOption(i, answerOptions[i]);
+                answerOption = CreateAnswerOption(i, answerOptionsSets[i]);
                 _answerOptions.Add(answerOption);
             }
+            answerOption.SetAllowed(_task.IsAnswerOptionAllowed(i));
         }
     }
 

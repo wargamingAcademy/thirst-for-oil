@@ -29,6 +29,11 @@ namespace Tasks
             }
         }
 
+        public bool IsAnswerOptionAllowed(int index)
+        {
+            return true; // Todo: check conditions
+        }
+
         public AnswerOptionSet[] GetAnswerOptions()
         {
             return _settings.progress[_progress].answerOptions;

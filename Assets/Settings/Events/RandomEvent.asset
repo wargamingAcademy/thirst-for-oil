@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10338ef7063b29f42b94cd8a49a5952a, type: 3}
-  m_Name: BasicTask
+  m_Script: {fileID: 11500000, guid: f887628a7ffdf2a478bfcab41c110b01, type: 3}
+  m_Name: RandomEvent
   m_EditorClassIdentifier: 
-  taskName: 
-  descriptionPoolSet: {fileID: 0}
-  taskWidgetPoolSet: {fileID: 0}
-  progress: []
+  taskSettings: {fileID: 11400000, guid: b3d71b3943a6c5243ba7751763a63e86, type: 2}
+  _weight: 0.5

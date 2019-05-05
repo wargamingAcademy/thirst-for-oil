@@ -9,7 +9,7 @@ namespace Tasks
         public static TaskManager instance => _instance;
 
         static TaskManager _instance;
-        List<ITask> _taskList;
+        List<ITask> _taskList = new List<ITask>();
 
         Action<TaskEventType,ITask> _onTaskChanged;
 
@@ -51,12 +51,13 @@ namespace Tasks
             return _taskList;
         }
 
-        public void AddTask(TaskSettingsBase taskSettings)
+        public ITask AddTask(TaskSettingsBase taskSettings)
         {
             ITask newTask = taskSettings.CreateNewTask();
             _taskList.Add(newTask);
             newTask.Initialize(taskSettings);
             _onTaskChanged?.Invoke(TaskEventType.Added, newTask);
+            return newTask;
         }
 
         public void RemoveTask(ITask task)

@@ -5,10 +5,12 @@ using PoolsManagement;
 
 public class MenuTasks : MonoBehaviour
 {
+#pragma warning disable CS0649
     [SerializeField]
     Transform _tasksSelector;
     [SerializeField]
     Transform _taskWidgetContainer;
+#pragma warning restore CS0649
 
     int _selectedIndex = 0;
     BasicTaskWidget _taskWidget; // Todo: replace with interface
@@ -86,7 +88,6 @@ public class MenuTasks : MonoBehaviour
         _taskWidget = taskWidgetPoolSet.GetNewObject(_taskWidgetContainer) as BasicTaskWidget;
         _taskWidget.TaskUpdate(task);
 
-        //((RectTransform)_taskWidget.transform).
         _taskWidget.gameObject.SetActive(true); // Todo: run widget show animation
     }
 
@@ -106,7 +107,7 @@ public class MenuTasks : MonoBehaviour
     TaskShortInfoWidget CreateTaskWidget(int index, ITask task)
     {
         PoolSettingsSO taskInfoWidgetPoolSet = task.GetShortInfoPoolSet();
-        TaskShortInfoWidget taskShortInfoWidget = taskInfoWidgetPoolSet.GetNewObject(_tasksSelector) as TaskShortInfoWidget;
+        var taskShortInfoWidget = taskInfoWidgetPoolSet.GetNewObject(_tasksSelector) as TaskShortInfoWidget;
 
         taskShortInfoWidget.Initialize(index, task);
         taskShortInfoWidget.OnClickSubscribe(ShowTask);
