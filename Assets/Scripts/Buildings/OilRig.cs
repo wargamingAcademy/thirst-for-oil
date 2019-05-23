@@ -9,9 +9,15 @@ public class OilRig : GeneralBuilding
     {
        return levelManager.GetTile(TileNames.OIL_RIG);
     }
+
     public override Sprite GetSprite()
     {
         return levelManager.GetSprite(TileNames.OIL_RIG);
+    }
+
+    public override Sprite GetSpriteIcon()
+    {
+        return levelManager.GetIconSprite(TileNames.OIL_RIG_ICON);
     }
 
     public override float GetPrice()
@@ -27,14 +33,14 @@ public class OilRig : GeneralBuilding
     public override bool IsCanBeBuild(Vector2Int position)
     {   
         
-        if (!(levelManager.resourceTilemap.Resources.GetLength(0) > position.x) ||
-            !(levelManager.resourceTilemap.Resources.GetLength(1) > position.y))
+        if (!(levelManager.resourceData.Resources.GetLength(0) > position.x) ||
+            !(levelManager.resourceData.Resources.GetLength(1) > position.y))
         {
             return false;        
         }
-        if (levelManager.resourceTilemap.Resources[position.x, position.y] == Resource.Oil)
+        if (levelManager.resourceData.Resources[position.x, position.y] == Resource.Oil)
         {
-            if (levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] == true)
+            if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x, position.y] == true)
             {
                 return true;
             }
@@ -50,6 +56,11 @@ public class OilRig : GeneralBuilding
     }
 
     public override void OnEndTurn()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override bool[,] GetAvailibleCells()
     {
         throw new System.NotImplementedException();
     }

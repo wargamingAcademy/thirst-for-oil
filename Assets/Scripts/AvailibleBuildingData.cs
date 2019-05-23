@@ -9,18 +9,31 @@ using UnityEngine.Tilemaps;
 public class AvailibleBuildingData : ScriptableObject
 {
     public bool[,] IsAvailibleBuilding;
-    private Tilemap tilemap;
+    private Tilemap availibleBuildingTilemap;
+    private Tilemap availibleBuildingForShowTilemap;
+    public Tile activeCell;
+    public Tile inactiveCell;
+    public Vector2Int availibleBuildingOffset;
 
     public void Initialize(Vector2Int worldSize)
     {
         GameObject tilemapGameObject = GameObject.Find(ObjectnamesConstant.AVAILIBLE_BUILDING);
-        tilemap=tilemapGameObject.GetComponent<Tilemap>();
-        if (tilemap == null)
+        availibleBuildingTilemap = tilemapGameObject.GetComponent<Tilemap>();
+        GameObject availibleBuildingForShowGameObject =
+            GameObject.Find(ObjectnamesConstant.AVAILIBLE_BUILDING_FOR_SHOW);
+        availibleBuildingForShowTilemap = availibleBuildingForShowGameObject.GetComponent<Tilemap>();
+        if (availibleBuildingTilemap == null)
         {
             throw new ArgumentNullException();
         }
-        BoundsInt bounds = tilemap.cellBounds;
-        IsAvailibleBuilding = new bool[worldSize.x,worldSize.y];
+
+        BoundsInt bounds = availibleBuildingTilemap.cellBounds;
+        availibleBuildingOffset=new Vector2Int(bounds.x,bounds.y);
+        var forShowBound=availibleBuildingForShowTilemap.cellBounds;
+       /* forShowBound.x = availibleBuildingOffset.x;
+        forShowBound.y = availibleBuildingOffset.y;*/
+
+        IsAvailibleBuilding = new bool[worldSize.x, worldSize.y];
         for (int x = 0; x < worldSize.x; x++)
         {
             for (int y = 0; y < worldSize.y; y++)
@@ -29,27 +42,81 @@ public class AvailibleBuildingData : ScriptableObject
             }
         }
 
-        for (int x = 0; x < tilemap.size.x; x++)
+        for (int x = 0; x < availibleBuildingTilemap.size.x; x++)
         {
-            for (int y = 0; y < tilemap.size.y; y++)
+            for (int y = 0; y < availibleBuildingTilemap.size.y; y++)
             {
                 Vector2Int size = new Vector2Int();
-                size.x = tilemap.size.x % 2 > 0 ? tilemap.size.x / 2 + 1 : tilemap.size.x / 2;
-                size.y = tilemap.size.y % 2 > 0 ? tilemap.size.y / 2 + 1 : tilemap.size.y / 2 + 1;
+                size.x = availibleBuildingTilemap.size.x % 2 > 0
+                    ? availibleBuildingTilemap.size.x / 2 + 1
+                    : availibleBuildingTilemap.size.x / 2;
+                size.y = availibleBuildingTilemap.size.y % 2 > 0
+                    ? availibleBuildingTilemap.size.y / 2 + 1
+                    : availibleBuildingTilemap.size.y / 2 + 1;
 
-                TileBase tileBase = tilemap.GetTile(new Vector3Int(x + bounds.position.x, y + bounds.position.y, 0));
+                TileBase tileBase =
+                    availibleBuildingTilemap.GetTile(new Vector3Int(x + bounds.position.x, y + bounds.position.y, 0));
                 if (tileBase == null)
                 {
+                    IsAvailibleBuilding[x, y] = false;
                     continue;
                 }
+
                 switch (tileBase.name)
                 {
                     case "noBuilding":
-                        IsAvailibleBuilding[x, y] = false; break;
+                        IsAvailibleBuilding[x, y] = false;
+                        break;
                     case "building":
-                        IsAvailibleBuilding[x, y] = true; break;
+                        IsAvailibleBuilding[x, y] = true;
+                        break;
                 }
             }
         }
+    }
+
+    public void SetAvailibleBuildingForShow(bool[,] availibleCells,Vector3Int offset)
+    {
+        for (int i = 0; i < availibleCells.GetLength(0); i++)
+        {
+            for (int j = 0; j < availibleCells.GetLength(1); j++)
+            {
+                if (availibleCells[i, j])
+                {
+                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i+offset.x,j+offset.y,offset.z), activeCell);
+                }
+                else
+                {
+                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i + offset.x, j + offset.y, offset.z), inactiveCell);
+                }
+            }
+        }
+    }
+
+    public void ShowAvailibleCells(bool isVisible)
+    {
+        if (isVisible)
+        {
+            availibleBuildingForShowTilemap.enabled = true;
+        }
+        else
+        {
+            availibleBuildingForShowTilemap.ClearAllTiles();
+        }
+    }
+
+    public Vector2Int GetTilemapOffset()
+    {
+        Camera camera = FindObjectOfType<Camera>();
+        /*camera.rect.min;
+        availibleBuildingTilemap.transform.position;
+        availibleBuildingTilemap.cellBounds;
+        availibleBuildingTilemap.cellSize;*/
+        Vector3 cameraBoundMin = camera.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        Vector2 distance=new Vector2(-availibleBuildingTilemap.cellBounds.xMin* availibleBuildingTilemap.cellSize.x + camera.rect.position.x,
+            -availibleBuildingTilemap.cellBounds.yMin * availibleBuildingTilemap.cellSize.y + camera.rect.position.y);
+        Vector2Int offset = new Vector2Int((int)Math.Ceiling(distance.x / availibleBuildingTilemap.cellSize.x),
+            (int)Math.Ceiling(distance.y / availibleBuildingTilemap.cellSize.y));
+        return new Vector2Int(offset.x-availibleBuildingTilemap.cellBounds.x, offset.y - availibleBuildingTilemap.cellBounds.y);
     }
 }

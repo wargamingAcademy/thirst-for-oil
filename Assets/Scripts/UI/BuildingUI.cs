@@ -3,30 +3,44 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 
-public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
+public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandler
 {
+
     public Building building;
     public UIOilController uiController;
-    private GeneralBuilding generalBuilding;
-    public void Start()
-    {
-        Text text = gameObject.GetComponentInChildren<Text>();
-        Button button = gameObject.GetComponentInChildren<Button>();
-        
-        generalBuilding= GetBuilding(building);
-        text.text = generalBuilding.GetDescription();
-       
-        button.onClick.AddListener(TaskOnClick); 
-    }
+    public GeneralBuilding generalBuilding;
+    private GeneralBuilding[] buildings;
+    public delegate void BuildingDelegate(GeneralBuilding building);
+
+    public delegate void ChancelBuildingDelegate();
+    public static event BuildingDelegate StartBuildingEvent;
+    public static event ChancelBuildingDelegate ChancelBuildingEvent;
+    /* public void Start()
+     {
+         Text text = gameObject.GetComponentInChildren<Text>();
+         Button button = gameObject.GetComponentInChildren<Button>();
+
+         generalBuilding= GetBuilding(building);
+         text.text = generalBuilding.GetDescription();
+
+         button.onClick.AddListener(TaskOnClick); 
+
+     }*/
 
     /// <summary>
     /// Событие нажатия на кнопку строительства 
     /// </summary>
     public void TaskOnClick()
     {
-        CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
+       bool[,] availibleCells= generalBuilding.GetAvailibleCells();
+       Vector3Int offset=new Vector3Int(generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.x,
+           generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.y,0);
+       generalBuilding.levelManager.availibleBuildingData.SetAvailibleBuildingForShow(availibleCells, offset);
+       generalBuilding.levelManager.availibleBuildingData.ShowAvailibleCells(true);
+       StartBuildingEvent(generalBuilding);
+       /* CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
 
-        generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);
+        generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
     }
 
     /// <summary>
@@ -44,13 +58,13 @@ public class BuildingUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         throw new ArgumentException("нет такого здания");
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+  /*  public void OnPointerEnter(PointerEventData eventData)
     {
         uiController.ShowPriceBuildingOnBar(generalBuilding.GetPrice()*Constants.ANCHOR_MAX_Y/100);
-    }
+    }*/
 
-    public void OnPointerExit(PointerEventData eventData)
+   /* public void OnPointerExit(PointerEventData eventData)
     {
         uiController.HidePriceBuildingOnBar();
-    }
+    }*/
 }

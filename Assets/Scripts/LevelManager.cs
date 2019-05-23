@@ -9,11 +9,11 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class LevelManager : MonoBehaviour
 {
-    public AvailibleBuildingData availibleBuildingTilemap;
-    public ResourceData resourceTilemap;
+    public AvailibleBuildingData availibleBuildingData;
+    public ResourceData resourceData;
     public GridTilemap gridTilemap;
     public Tilemap fogeOfWarTilemap;
-    public BuildingData buildingTilemap;
+    public BuildingData buildingData;
 
     /// <summary>
     /// ширина клетки тайлмапа в еденицах unity
@@ -32,9 +32,14 @@ public class LevelManager : MonoBehaviour
     public List<TileBase> tiles;
 
     /// <summary>
-    /// иконки всех зданий
+    /// спрайты зданий
     /// </summary>
     public Sprite[] sprites;
+
+    /// <summary>
+    /// иконки зданий
+    /// </summary>
+    public Sprite[] iconSprites;
 
     /// <summary>
     /// палитра зданий
@@ -45,10 +50,10 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         fogeOfWarTilemap = GameObject.Find(ObjectnamesConstant.FOGE_OF_WAR_TILEMAP).GetComponent<Tilemap>();
-        availibleBuildingTilemap.Initialize(worldSize);
-        resourceTilemap.Initialize();
+        availibleBuildingData.Initialize(worldSize);
+        resourceData.Initialize();
         gridTilemap.Initialize(worldSize,offset);
-        buildingTilemap.Initialize();
+        buildingData.Initialize();
         GameObject go=GameObject.Find("BuildingTilemap");
 
         PlayerInput.Instance.EnableButtons();
@@ -56,6 +61,7 @@ public class LevelManager : MonoBehaviour
         tiles = new List<TileBase>();
         buildingsPrefab = Resources.Load<GameObject>(PathConstants.PATH_PALETTES + PathConstants.BUILDINGS);
         sprites = Resources.LoadAll<Sprite>(PathConstants.PATH_SPRITES+PathConstants.BUILDINGS);
+        iconSprites= Resources.LoadAll<Sprite>(PathConstants.PATH_SPRITES + PathConstants.ICON_BUILDINGS);
         var tilemap = buildingsPrefab.GetComponentInChildren<Tilemap>();
         for (int x = 0; x < tilemap.size.x; x++)
         {
@@ -68,6 +74,9 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+
+        var buildInterface = FindObjectOfType<BuildInterfaceBuilder>();
+        buildInterface.ShowBuildInterface();
     }
 
     /// <summary>
@@ -101,6 +110,23 @@ public class LevelManager : MonoBehaviour
                 return sprite;
             }
         }
-        return null;
+        throw new FileNotFoundException("Спрайт не найден");
+    }
+
+    /// <summary>
+    /// Ищем иконку здания по имени
+    /// </summary>
+    /// <param name="name">имя спрайта</param>
+    /// <returns></returns>
+    public Sprite GetIconSprite(string name)
+    {
+        foreach (Sprite sprite in iconSprites)
+        {
+            if (sprite.name == name)
+            {
+                return sprite;
+            }
+        }
+        throw new FileNotFoundException("Спрайт не найден");
     }
 }

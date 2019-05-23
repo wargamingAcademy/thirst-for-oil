@@ -26,6 +26,7 @@ namespace Gamekit2D
             Instance.MoveDown = new InputButton(KeyCode.DownArrow);
             Instance.CellSelected = new InputButton(KeyCode.Mouse0);
             Instance.Exit = new InputButton(KeyCode.Escape);
+            Instance.ChancelAction=new InputButton(KeyCode.Mouse1);
         }
         public bool HaveControl { get { return m_HaveControl; } }
         public InputButton MoveLeft;
@@ -33,6 +34,7 @@ namespace Gamekit2D
         public InputButton MoveUp;
         public InputButton MoveDown;
         public InputButton CellSelected;
+        public InputButton ChancelAction;
         public InputButton Exit;
 
         protected bool m_HaveControl = true;
@@ -53,6 +55,7 @@ namespace Gamekit2D
             Instance.MoveDown.Get(fixedUpdateHappened, inputType);
             Instance.CellSelected.Get(fixedUpdateHappened, inputType);
             Instance.Exit.Get(fixedUpdateHappened, inputType);
+            Instance.ChancelAction.Get(fixedUpdateHappened, inputType);
         }
 
         public void EnableButtons()
@@ -63,7 +66,9 @@ namespace Gamekit2D
             Instance.MoveDown.Enable();
             Instance.CellSelected.Enable();
             Instance.Exit.Enable();
+            Instance.ChancelAction.Enable();
         }
+
         public override void GainControl()
         {
             m_HaveControl = true;
