@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Assets.Scripts.Buildings;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,12 +11,15 @@ public abstract class GeneralBuilding
     protected UIOilController uiController;
     protected LevelManager levelManager;
     protected ResourceManager resourceManager;
+    protected BuildingManager buildingManager;
+    public Vector2Int Position { get; private set; }
    
     public GeneralBuilding()
     {
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         resourceManager = GameObject.FindObjectOfType<ResourceManager>();
         uiController = GameObject.FindObjectOfType<UIOilController>();
+        buildingManager = GameObject.FindObjectOfType<BuildingManager>();
     }
       
     /// <summary>
@@ -39,6 +43,7 @@ public abstract class GeneralBuilding
         levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
         levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
         levelManager.resourceTilemap.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+        Position=coordinate;
         float priceBuilding= GetPrice();
         resourceManager.Oil -= priceBuilding;
         OnBuilding();
