@@ -1,5 +1,6 @@
-﻿using System;
-using System.IO;
+using System;
+﻿using System.IO;
+using Assets.Scripts.Buildings;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,6 +13,8 @@ public abstract class GeneralBuilding
     protected UIOilController uiController;
     public LevelManager levelManager;
     protected ResourceManager resourceManager;
+    protected BuildingManager buildingManager;
+    public Vector2Int Position { get; private set; }
 
    
     public GeneralBuilding()
@@ -19,6 +22,7 @@ public abstract class GeneralBuilding
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         resourceManager = GameObject.FindObjectOfType<ResourceManager>();
         uiController = GameObject.FindObjectOfType<UIOilController>();
+        buildingManager = GameObject.FindObjectOfType<BuildingManager>();
     }
       
     /// <summary>
@@ -39,11 +43,13 @@ public abstract class GeneralBuilding
         {
             return false;
         }
-        levelManager.availibleBuildingData.IsAvailibleBuilding[position.x, position.y] = false;
-        levelManager.buildingData.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
-        levelManager.resourceData.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+        levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
+        levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        levelManager.resourceTilemap.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+        Position=coordinate;
         float priceBuilding= GetPrice();
         resourceManager.Oil -= priceBuilding;
+        buildingManager.AddBuilding(this);
         OnBuilding();
        // TurnController.TurnEndEvent += OnEndTurn;
         return true;

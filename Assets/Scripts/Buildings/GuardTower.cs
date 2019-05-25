@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
+using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
 [Serializable]
 public class GuardTower : GeneralBuilding
 {
@@ -22,7 +23,9 @@ public class GuardTower : GeneralBuilding
 
     public override float GetPrice()
     {
-        return Prices.GUARD_TOWER_PRICE;
+        ModificatorManager.Instance.RegisterResourceModificator(new PriceBuildingModificator());
+        var modificator = (PriceBuildingModificator)ModificatorManager.Instance.GetResourceModificator(new PriceBuildingModificator());
+        return modificator.GetPrice(Prices.GUARD_TOWER_PRICE);
     }
 
     public override string GetDescription()
