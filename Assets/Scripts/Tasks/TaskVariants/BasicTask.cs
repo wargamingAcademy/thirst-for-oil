@@ -23,14 +23,19 @@ namespace Tasks
                 TaskManager.instance.RemoveTask(this);
         }
 
-        public bool IsAnswerOptionAllowed(int index)
+        public virtual bool IsAnswerOptionAllowed(int index)
         {
             return true; // Todo: check conditions
         }
 
-        public AnswerOptionSet[] GetAnswerOptions()
+        public AnswerOptionSet[] GetAnswerOptionsSets()
         {
             return _settings.progress[_progress].answerOptions;
+        }
+
+        public virtual string GetAnswerText(int index)
+        {
+            return _settings.progress[_progress].answerOptions[index].text;
         }
 
         public override string GetTaskDescription()

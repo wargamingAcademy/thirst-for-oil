@@ -21,8 +21,21 @@ public class DieselDogsTask : BasicTask
             case 4:
                 return string.Format(baseDescription, Mathf.RoundToInt(_oilPenalty * 100f));
         }
-
         return baseDescription;
+    }
+
+    public override string GetAnswerText(int index)
+    {
+        if (_progress == 0)
+        {
+            switch (index)
+            {
+                case 2:
+                    return string.Format(base.GetAnswerText(index), ((DieselDogsTaskSettings)_settings).answer3OilPrice);
+            }
+        }
+
+        return base.GetAnswerText(index);
     }
 
     public override void Initialize(TaskSettingsBase settings)
@@ -52,6 +65,9 @@ public class DieselDogsTask : BasicTask
                 break;
             case 2:
                 float random = Random.Range(0f, 1f);
+
+                ResourceManager.Instance.Oil -= taskSettings.answer3OilPrice;
+
                 if (random < 0.5f)
                 {
                     _attackPenalty = -Random.Range(taskSettings.minAtackBoost3, taskSettings.maxAtackBoost3);
@@ -73,6 +89,17 @@ public class DieselDogsTask : BasicTask
         attackModificator.AttackPowerInPercentDieselDogs -= _attackPenalty;
 
         TaskManager.instance.TaskUpdated(this);
+    }
+
+    public override bool IsAnswerOptionAllowed(int index)
+    {
+        if (_progress == 0)
+            switch (index)
+            {
+                case 2:
+                    return ResourceManager.Instance.Oil > ((DieselDogsTaskSettings)_settings).answer3OilPrice;
+            }
+        return true;
     }
 
     public override bool UpdateTask()

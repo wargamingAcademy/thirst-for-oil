@@ -21,7 +21,7 @@ public class BasicTaskWidget : PoolableObject
     TaskAnswerOption CreateAnswerOption(int index, AnswerOptionSet answerOptionSet)
     {
         var answerOption = answerOptionSet.poolSet.GetNewObject(_answersContainer) as TaskAnswerOption;
-        answerOption.SetValues(index, answerOptionSet.text);
+        answerOption.SetValues(index, _task.GetAnswerText(index));
         answerOption.OnClickSubscribe(OptionSelected);
 
         answerOption.gameObject.name = answerOptionSet.poolSet.prefab.name + "_" + index;
@@ -42,7 +42,7 @@ public class BasicTaskWidget : PoolableObject
         _taskName.text = _task.GetTaskName();
         _taskDescription.text = _task.GetTaskDescription();
 
-        AnswerOptionSet[] answerOptionsSets = _task.GetAnswerOptions();
+        AnswerOptionSet[] answerOptionsSets = _task.GetAnswerOptionsSets();
 
         int deltaCount = _answerOptions.Count - answerOptionsSets.Length;
         if (deltaCount > 0)
@@ -68,7 +68,7 @@ public class BasicTaskWidget : PoolableObject
                 }
                 else
                 {
-                    answerOption.SetValues(i, answerOptionsSets[i].text);
+                    answerOption.SetValues(i, _task.GetAnswerText(i));
                 }
             }
             else
