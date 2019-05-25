@@ -23,9 +23,6 @@ public class LevelManager : MonoBehaviour
     public Vector2Int worldSize;
     public Vector2Int offset;
 
-    public GeneralBuilding buildings;
-
-
     /// <summary>
     /// Список всех зданий в палитре
     /// </summary>

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Modificators;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ModificatorManager : MonoBehaviour
 {
-    private List<IResourceModificator> resourceModificators;
+    private List<IModificator> resourceModificators;
 
     public static ModificatorManager Instance => instance;
 
@@ -18,10 +19,10 @@ public class ModificatorManager : MonoBehaviour
             return;
         }
         instance = this;
-        resourceModificators=new List<IResourceModificator>();
+        resourceModificators=new List<IModificator>();
     }
 
-    public void RegisterResourceModificator(IResourceModificator resModificator)
+    public void RegisterResourceModificator(IModificator resModificator)
     {
         foreach (var resourceModificator in resourceModificators)
         {
@@ -34,7 +35,7 @@ public class ModificatorManager : MonoBehaviour
         resourceModificators.Add(resModificator);
     }
 
-   public IResourceModificator GetResourceModificator(IResourceModificator modificator)
+   public IModificator GetResourceModificator(IModificator modificator)
     {
         foreach (var resourceModificator in resourceModificators)
         {

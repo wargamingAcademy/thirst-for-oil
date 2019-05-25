@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class OilRig : GeneralBuilding
@@ -16,7 +17,9 @@ public class OilRig : GeneralBuilding
 
     public override float GetPrice()
     {
-        return Prices.OIL_RIG_IN_OIL_PRICE;
+        ModificatorManager.Instance.RegisterResourceModificator(new PriceBuildingModificator());
+        var modificator = (PriceBuildingModificator)ModificatorManager.Instance.GetResourceModificator(new PriceBuildingModificator());
+        return modificator.GetPrice(Prices.OIL_RIG_IN_OIL_PRICE);
     }
 
     public override string GetDescription()
@@ -44,8 +47,8 @@ public class OilRig : GeneralBuilding
 
     public override void OnBuilding()
     {
-        ModificatorManager.Instance.RegisterResourceModificator(new OilRigResModificator());
-        var modificator =(OilRigResModificator) ModificatorManager.Instance.GetResourceModificator(new OilRigResModificator());
+        ModificatorManager.Instance.RegisterResourceModificator(new OilRigIncomeModificator());
+        var modificator =(OilRigIncomeModificator) ModificatorManager.Instance.GetResourceModificator(new OilRigIncomeModificator());
         resourceManager.IncomeOil +=modificator.GetOilIncome(AMOUNT_OIL_PRODUCING); 
     }
 
