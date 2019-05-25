@@ -22,12 +22,13 @@ namespace Tasks
                 return;
             }
             _instance = this;
+            Initialize();
         }
 
         public void Initialize() // Todo: load tasks
         {
             _taskList = new List<ITask>();
-            //fill and initialize initial task list
+            TurnController.TurnEndEvent += UpdateTasks;
         }
 
         void OnDestroy()
@@ -57,6 +58,7 @@ namespace Tasks
             _taskList.Add(newTask);
             newTask.Initialize(taskSettings);
             _onTaskChanged?.Invoke(TaskEventType.Added, newTask);
+            newTask.UpdateTask();
             return newTask;
         }
 

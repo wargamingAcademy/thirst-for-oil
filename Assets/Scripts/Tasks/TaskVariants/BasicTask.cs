@@ -13,20 +13,14 @@ namespace Tasks
             _settings = (BasicTaskSettings)settings;
         }
 
-        public void PlayerAnwer(int index) // Todo: resolve player answers
+        public virtual void PlayerAnwer(int index)
         {
             string anwerKey = _settings.progress[_progress].answerOptions[index].key;
             _progress++;
             if (_progress < _settings.progress.Length)
-            {
-                Debug.Log($"Option {index} with kew {anwerKey} answered to {GetTaskName()}. New Progress is {_progress}");
                 TaskManager.instance.TaskUpdated(this);
-            }
             else
-            {
-                Debug.Log($"Option {index} answered to {GetTaskName()}. Task {GetTaskName()} Done!");
                 TaskManager.instance.RemoveTask(this);
-            }
         }
 
         public bool IsAnswerOptionAllowed(int index)

@@ -20,7 +20,7 @@ public class EventGenerator : MonoBehaviour
     void Awake()
     {
         Init();
-        // Todo: subscribe to new turn
+        TurnController.TurnStartEvent += GenerateEvents;
     }
 
     public void Init()
@@ -33,7 +33,7 @@ public class EventGenerator : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Todo: unscribe from new turn
+        TurnController.TurnStartEvent -= GenerateEvents;
     }
 
     [ContextMenu("GenerateEvents")]

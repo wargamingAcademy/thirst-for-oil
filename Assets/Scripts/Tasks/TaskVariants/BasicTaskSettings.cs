@@ -18,6 +18,7 @@ namespace Tasks
         {
             public string key;
             public string shortDescription;
+            [TextArea]
             public string description;
             public AnswerOptionSet[] answerOptions;
         }
@@ -27,6 +28,7 @@ namespace Tasks
     public class AnswerOptionSet
     {
         public string key;
+        [TextArea]
         public string text;
         public PoolSettingsSO poolSet;
     }

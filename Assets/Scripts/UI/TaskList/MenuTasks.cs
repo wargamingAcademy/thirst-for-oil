@@ -36,6 +36,11 @@ public class MenuTasks : MonoBehaviour
             TaskManager.instance.OnTaskChangedUnscribe(OnTaskChanged);
     }
 
+    public void HideMenu()
+    {
+        gameObject.SetActive(false);
+    }
+
     void OnTaskChanged(TaskEventType eventType, ITask task)
     {
         TaskShortInfoWidget taskInfo;
