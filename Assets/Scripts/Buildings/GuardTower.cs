@@ -33,12 +33,12 @@ public class GuardTower : GeneralBuilding
     public override bool IsCanBeBuild(Vector2Int position)
     {
 
-        if (!(levelManager.resourceData.Resources.GetLength(0) > position.x) ||
-            !(levelManager.resourceData.Resources.GetLength(1) > position.y))
+        if (!(levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(0) > position.x) ||
+            !(levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(1) > position.y))
         {
             return false;
         }
-        if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x, position.y] == true)
+        if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x-levelManager.offset.x, position.y - levelManager.offset.y] == true)
         {
             return true;
         }

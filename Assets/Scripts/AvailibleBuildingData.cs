@@ -14,9 +14,11 @@ public class AvailibleBuildingData : ScriptableObject
     public Tile activeCell;
     public Tile inactiveCell;
     public Vector2Int availibleBuildingOffset;
+    public LevelManager levelManager;
 
     public void Initialize(Vector2Int worldSize)
     {
+        levelManager = FindObjectOfType<LevelManager>();
         GameObject tilemapGameObject = GameObject.Find(ObjectnamesConstant.AVAILIBLE_BUILDING);
         availibleBuildingTilemap = tilemapGameObject.GetComponent<Tilemap>();
         GameObject availibleBuildingForShowGameObject =
@@ -42,20 +44,20 @@ public class AvailibleBuildingData : ScriptableObject
             }
         }
 
-        for (int x = 0; x < availibleBuildingTilemap.size.x; x++)
+        for (int x = 0; x < levelManager.worldSize.x; x++)
         {
-            for (int y = 0; y < availibleBuildingTilemap.size.y; y++)
+            for (int y = 0; y < levelManager.worldSize.y; y++)
             {
-                Vector2Int size = new Vector2Int();
+               /* Vector2Int size = new Vector2Int();
                 size.x = availibleBuildingTilemap.size.x % 2 > 0
                     ? availibleBuildingTilemap.size.x / 2 + 1
                     : availibleBuildingTilemap.size.x / 2;
                 size.y = availibleBuildingTilemap.size.y % 2 > 0
                     ? availibleBuildingTilemap.size.y / 2 + 1
-                    : availibleBuildingTilemap.size.y / 2 + 1;
+                    : availibleBuildingTilemap.size.y / 2 + 1;*/
 
                 TileBase tileBase =
-                    availibleBuildingTilemap.GetTile(new Vector3Int(x + bounds.position.x, y + bounds.position.y, 0));
+                    availibleBuildingTilemap.GetTile(new Vector3Int(x +levelManager.offset.x, y  + levelManager.offset.y, 0));
                 if (tileBase == null)
                 {
                     IsAvailibleBuilding[x, y] = false;
@@ -75,7 +77,7 @@ public class AvailibleBuildingData : ScriptableObject
         }
     }
 
-    public void SetAvailibleBuildingForShow(bool[,] availibleCells,Vector3Int offset)
+    public void SetAvailibleBuildingForShow(bool[,] availibleCells,Vector2Int offset)
     {
         for (int i = 0; i < availibleCells.GetLength(0); i++)
         {
@@ -83,11 +85,11 @@ public class AvailibleBuildingData : ScriptableObject
             {
                 if (availibleCells[i, j])
                 {
-                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i+offset.x,j+offset.y,offset.z), activeCell);
+                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i+offset.x,j+offset.y,0), activeCell);
                 }
                 else
                 {
-                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i + offset.x, j + offset.y, offset.z), inactiveCell);
+                    availibleBuildingForShowTilemap.SetTile(new Vector3Int(i + offset.x, j + offset.y,0), inactiveCell);
                 }
             }
         }

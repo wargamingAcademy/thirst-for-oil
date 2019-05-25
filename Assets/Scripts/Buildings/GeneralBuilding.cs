@@ -30,7 +30,7 @@ public abstract class GeneralBuilding
     public bool ConstructBuilding(Vector2Int coordinate)
     {
         Vector2Int position = new Vector2Int(coordinate.x - levelManager.resourceData.tilemap.cellBounds.min.x, coordinate.y - levelManager.resourceData.tilemap.cellBounds.min.y);
-        if (!IsCanBeBuild(position))
+        if (!IsCanBeBuild(coordinate))
         {
             return false;
         }
@@ -83,7 +83,6 @@ public abstract class GeneralBuilding
     public bool CheckPosssibilityBuilding(Vector2Int position)
     {
         bool[,] cells = GetAvailibleCells();
-        Vector2Int offset = levelManager.availibleBuildingData.GetTilemapOffset();
-        return cells[position.x-offset.x , position.y - offset.y];
+        return cells[position.x- levelManager.offset.x , position.y - levelManager.offset.y];
     }
 }

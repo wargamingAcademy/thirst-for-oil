@@ -15,6 +15,13 @@ public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandl
     public delegate void ChancelBuildingDelegate();
     public static event BuildingDelegate StartBuildingEvent;
     public static event ChancelBuildingDelegate ChancelBuildingEvent;
+
+    private LevelManager levelManager;
+
+    public void Start()
+    {
+        levelManager = FindObjectOfType<LevelManager>();
+    }
     /* public void Start()
      {
          Text text = gameObject.GetComponentInChildren<Text>();
@@ -33,9 +40,9 @@ public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandl
     public void TaskOnClick()
     {
        bool[,] availibleCells= generalBuilding.GetAvailibleCells();
-       Vector3Int offset=new Vector3Int(generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.x,
-           generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.y,0);
-       generalBuilding.levelManager.availibleBuildingData.SetAvailibleBuildingForShow(availibleCells, offset);
+      /* Vector3Int offset=new Vector3Int(generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.x,
+           generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.y,0);*/
+       generalBuilding.levelManager.availibleBuildingData.SetAvailibleBuildingForShow(availibleCells,levelManager.offset );
        generalBuilding.levelManager.availibleBuildingData.ShowAvailibleCells(true);
        StartBuildingEvent(generalBuilding);
        /* CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();

@@ -32,7 +32,7 @@ public class CursorDrawer : MonoBehaviour
         BuildingUI.StartBuildingEvent += OnStartBuildingEvent;
         BuildingUI.ChancelBuildingEvent += OnChancelBuildingEvent;
         levelManager = FindObjectOfType<LevelManager>();
-        hoverCellTilemap.size=new Vector3Int(-15,15,0);
+       // hoverCellTilemap.size=new Vector3Int(-15,15,0);
     }
 
     void OnStartBuildingEvent(GeneralBuilding generalBuilding)
@@ -62,9 +62,9 @@ public class CursorDrawer : MonoBehaviour
         Bounds bounds = hoverCellTilemap.localBounds;
         worldPosition = camera.ScreenToWorldPoint(mousePos);
         cursorPosition = new Vector2Int(
-            (int)Math.Ceiling((worldPosition.x /*+ Constants.TILEMAP_OFFSET.x*/) /
+            (int)Math.Ceiling((worldPosition.x ) /
                               hoverCellTilemap.cellSize.x),
-            (int)Math.Ceiling((worldPosition.y /*+ Constants.TILEMAP_OFFSET.y*/) /
+            (int)Math.Ceiling((worldPosition.y ) /
                               hoverCellTilemap.cellSize.y));
         GUI.Label(new Rect(100, 150, 200, 40), "x:" + cursorPosition.x+ " y:" + cursorPosition.y);
         GUI.Label(new Rect(100, 200, 200, 40), "x:" + (bounds.min.x - worldPosition.x) + " y:" + (bounds.min.y - worldPosition.y));
@@ -103,12 +103,13 @@ public class CursorDrawer : MonoBehaviour
         }
         else
         {
-            if (building.CheckPosssibilityBuilding(cursorPosition))
+            if (building.CheckPosssibilityBuilding(new Vector2Int(cursorPosition.x-1,cursorPosition.y-1)))
             {
                 hoverCellTilemap.SetTile(new Vector3Int(cursorPosition.x - 1, cursorPosition.y - 1, 0),
                     selectedForBuildingCellActive);
                 if (PlayerInput.Instance.CellSelected.Down)
                 {
+                    building.
                     building.ConstructBuilding(currentSelectedTile);
                 }
             }
