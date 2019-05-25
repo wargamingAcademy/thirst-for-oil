@@ -1,58 +1,84 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
+using Assets.Scripts.Buildings;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// Хранит общую информацию для зданий
+/// Базовый класс хранящий информацию о зданиях
 /// </summary>
-[CreateAssetMenu(fileName = "GeneralBuilding", menuName = "GeneralBuilding", order = 57)]
-public class GeneralBuilding:ScriptableObject
+public abstract class GeneralBuilding
 {
-    /// <summary>
-    /// палитра зданий
-    /// </summary>
-    private GameObject buildingsPrefab;
-
-
-    /// <summary>
-    /// Список всех зданий в палитре
-    /// </summary>
-    public List<TileBase> tiles;
-    public void OnEnable()
+    protected UIOilController uiController;
+    protected LevelManager levelManager;
+    protected ResourceManager resourceManager;
+    protected BuildingManager buildingManager;
+    public Vector2Int Position { get; private set; }
+   
+    public GeneralBuilding()
     {
-        tiles=new List<TileBase>();
-        buildingsPrefab = Resources.Load<GameObject>(PathConstants.PATH_PALETTES + PathConstants.BUILDINGS);
-        var tilemap = buildingsPrefab.GetComponentInChildren<Tilemap>();
-        for (int x = 0; x < tilemap.size.x; x++)
+        levelManager = GameObject.FindObjectOfType<LevelManager>();
+        resourceManager = GameObject.FindObjectOfType<ResourceManager>();
+        uiController = GameObject.FindObjectOfType<UIOilController>();
+        buildingManager = GameObject.FindObjectOfType<BuildingManager>();
+    }
+      
+    /// <summary>
+    /// Построить здание
+    /// </summary>
+    /// <param name="coordinate">позиция строения</param>
+    /// <param name="building">здание</param>
+    /// <returns>true если успешно построили</returns>
+    public bool ConstructBuilding(Vector2Int coordinate)
+    {
+        Vector2Int position = new Vector2Int(coordinate.x - levelManager.resourceTilemap.tilemap.cellBounds.min.x, coordinate.y - levelManager.resourceTilemap.tilemap.cellBounds.min.y);
+        if (!IsCanBeBuild(position))
         {
-            for (int y = 0; y < tilemap.size.y; y++)
-            {
-                TileBase tile = tilemap.GetTile(new Vector3Int(x, y, 0));
-                if (tile != null)
-                {
-                    tiles.Add(tile);
-                }
-            }
+            return false;
         }
 
+        if (resourceManager.Oil < GetPrice())
+        {
+            return false;
+        }
+        levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
+        levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        levelManager.resourceTilemap.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+        Position=coordinate;
+        float priceBuilding= GetPrice();
+        resourceManager.Oil -= priceBuilding;
+        buildingManager.AddBuilding(this);
+        OnBuilding();
+       // TurnController.TurnEndEvent += OnEndTurn;
+        return true;
     }
 
+    public abstract TileBase GetTile();
+    public abstract Sprite GetSprite();
+
     /// <summary>
-    /// Ищем тайл по имени
+    /// Получить описание здания 
     /// </summary>
-    /// <param name="name">имя спрайта</param>
-    /// <returns></returns>
-    public Tile  GetTile(string name)
-    {
-        foreach (Tile tile in tiles)
-        {
-            if (tile.name == name)
-            {
-                return tile;
-            }
-        }
-        return null;
-    }
+    public abstract string GetDescription();
+
+    /// <summary>
+    /// Стоимость здания в нефти
+    /// </summary>
+    public abstract float GetPrice();
+
+    /// <summary>
+    /// Возвращает true если здание может быть построено
+    /// </summary>
+    /// <param name="position">позиция строящегося здания на tilemap</param>
+    public abstract bool IsCanBeBuild(Vector2Int position);
+
+    /// <summary>
+    /// Действие которое производит здание в конце хода
+    /// </summary>
+    public abstract void OnEndTurn();
+
+    /// <summary>
+    /// Действие выполняемое зданием сразу после строительства
+    /// </summary>
+    public abstract void OnBuilding();
+
 }
