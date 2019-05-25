@@ -46,6 +46,7 @@ public abstract class GeneralBuilding
         Position=coordinate;
         float priceBuilding= GetPrice();
         resourceManager.Oil -= priceBuilding;
+        buildingManager.AddBuilding(this);
         OnBuilding();
        // TurnController.TurnEndEvent += OnEndTurn;
         return true;
