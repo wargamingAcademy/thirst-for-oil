@@ -7,7 +7,7 @@ public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandl
 {
 
     public Building building;
-    public UIOilController uiController;
+
     public GeneralBuilding generalBuilding;
     private GeneralBuilding[] buildings;
     public delegate void BuildingDelegate(GeneralBuilding building);
@@ -43,11 +43,12 @@ public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandl
       /* Vector3Int offset=new Vector3Int(generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.x,
            generalBuilding.levelManager.availibleBuildingData.availibleBuildingOffset.y,0);*/
        generalBuilding.levelManager.availibleBuildingData.SetAvailibleBuildingForShow(availibleCells,levelManager.offset );
-       generalBuilding.levelManager.availibleBuildingData.ShowAvailibleCells(true);
+       generalBuilding.levelManager.availibleBuildingData.ShowAvailibleCells(true,generalBuilding);
        StartBuildingEvent(generalBuilding);
-       /* CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
+      
+        /* CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
 
-        generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
+         generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
         /*var cursorDrawer = FindObjectOfType<CursorDrawer>();
         var newBuilding = GetBuilding(building);
         newBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/

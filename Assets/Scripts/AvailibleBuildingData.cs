@@ -14,11 +14,13 @@ public class AvailibleBuildingData : ScriptableObject
     public Tile activeCell;
     public Tile inactiveCell;
     public Vector2Int availibleBuildingOffset;
-    public LevelManager levelManager;
+    private UIOilController uiController;
+    private LevelManager levelManager;
 
     public void Initialize(Vector2Int worldSize)
     {
         levelManager = FindObjectOfType<LevelManager>();
+        uiController = FindObjectOfType<UIOilController>();
         GameObject tilemapGameObject = GameObject.Find(ObjectnamesConstant.AVAILIBLE_BUILDING);
         availibleBuildingTilemap = tilemapGameObject.GetComponent<Tilemap>();
         GameObject availibleBuildingForShowGameObject =
@@ -95,15 +97,18 @@ public class AvailibleBuildingData : ScriptableObject
         }
     }
 
-    public void ShowAvailibleCells(bool isVisible)
+    public void ShowAvailibleCells(bool isVisible,GeneralBuilding building)
     {
         if (isVisible)
         {
             availibleBuildingForShowTilemap.enabled = true;
+            uiController.ShowPriceBuildingOnBar(building.GetPrice() * Constants.ANCHOR_MAX_Y / 100);
+        
         }
         else
         {
             availibleBuildingForShowTilemap.ClearAllTiles();
+            uiController.HidePriceBuildingOnBar();
         }
     }
 

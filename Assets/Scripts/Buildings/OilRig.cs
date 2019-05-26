@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
+﻿using Assets.Scripts.Constants;
+using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -29,7 +30,8 @@ public class OilRig : GeneralBuilding
 
     public override string GetDescription()
     {
-        return "Добывает "+Prices.AMOUNT_OIL_PRODUCING+"ед. нефти в ход";
+        var modificator = (OilRigIncomeModificator)ModificatorManager.Instance.GetResourceModificator(new OilRigIncomeModificator());
+        return "Добывает ["+ modificator.GetOilIncome(Prices.AMOUNT_OIL_PRODUCING) + "] ед. нефти в ход.";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
@@ -80,5 +82,10 @@ public class OilRig : GeneralBuilding
             }
         }
         return result;
+    }
+
+    public override string GetName()
+    {
+        return NamesBuildingRus.OIL_RIG_NAME;
     }
 }

@@ -44,7 +44,7 @@ public class CursorDrawer : MonoBehaviour
     void OnChancelBuildingEvent()
     {
         isBuildingStarted = false;
-        levelManager.availibleBuildingData.ShowAvailibleCells(false);
+        levelManager.availibleBuildingData.ShowAvailibleCells(false,building);
     }
 
     void FixedUpdate()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.UI
@@ -12,6 +13,7 @@ namespace Assets.Scripts.UI
         public GameObject tooltipCanvas;
         private GameObject tooltip;
         private bool isEnabled=true;
+        public GeneralBuilding buiding;
         public void Awake()
         {
             if (tooltip == null)
@@ -60,7 +62,12 @@ namespace Assets.Scripts.UI
                    float startX = childButtonRect.anchorMin.x * Screen.width;
                    float startY = childButtonRect.anchorMin.y * Screen.height;
                    float width = childButtonRect.sizeDelta.x;
-
+                   Transform header = buildingInfo.GetChild(0);
+                   header.GetComponent<TextMeshProUGUI>().text= buiding.GetName();
+                   Transform description = buildingInfo.GetChild(1);
+                    description.GetComponent<TextMeshProUGUI>().text=buiding.GetDescription();
+                    Transform price = buildingInfo.GetChild(3);
+                    price.GetComponent<TextMeshProUGUI>().text = buiding.GetPrice().ToString();
                     tooltipRect.position=new Vector2(startX + rect.rect.width / 2-width/2-10, startY + rect.rect.height / 2+width/2 + 30);
                    // newRect.position = new Vector2(this.transform.position.x + rect.rect.width / 2, this.transform.position.y + rect.rect.height / 2 + 30);
                     /* Rect promRect =new Rect(new Vector3(this.transform.position.x + rect.rect.width / 2, this.transform.position.y + rect.rect.height / 2 + 30)

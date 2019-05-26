@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
 using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
+using Assets.Scripts.Constants;
+
 [Serializable]
 public class GuardTower : GeneralBuilding
 {
@@ -30,7 +32,7 @@ public class GuardTower : GeneralBuilding
 
     public override string GetDescription()
     {
-        return "Защищает вас от врагов";
+        return "Защищает вас от врагов.";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
@@ -64,5 +66,10 @@ public class GuardTower : GeneralBuilding
         return levelManager.availibleBuildingData.IsAvailibleBuilding;
        // bool[,] result = new bool[levelManager.worldSize.x, levelManager.worldSize.y];
 
+    }
+
+    public override string GetName()
+    {
+       return NamesBuildingRus.GUARD_TOWER_NAME;
     }
 }

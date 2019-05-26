@@ -64,6 +64,7 @@ public abstract class GeneralBuilding
     /// </summary>
     public abstract string GetDescription();
 
+    public abstract string GetName();
     /// <summary>
     /// Стоимость здания в нефти
     /// </summary>

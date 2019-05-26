@@ -67,7 +67,7 @@ public class BuildInterfaceBuilder:MonoBehaviour
             BuildingObject building = buildingPool.Pop();
             Button button = building.instance.GetComponentInChildren<Button>();
             BuildingUI buildingUI = building.instance.GetComponentInChildren<BuildingUI>();
-            buildingUI.uiController = FindObjectOfType<UIOilController>();
+           // buildingUI.uiController = FindObjectOfType<UIOilController>();
             var buttonGO = building.instance.transform.GetChild(0);
             var buttonScript = buttonGO.GetComponent<Button>();
             var colors = buttonScript.colors;
@@ -85,6 +85,7 @@ public class BuildInterfaceBuilder:MonoBehaviour
                 buttonScript.colors = colors;
                 button.onClick.AddListener(buildingUI.TaskOnClick);
                 tooltip.Enable();
+                tooltip.buiding = generalBuilding;
             }
             else
             {

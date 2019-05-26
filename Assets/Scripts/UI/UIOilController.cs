@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Класс отвечающий за графическое отображение нефти в колбе
 /// </summary>
+[Serializable]
 public class UIOilController : MonoBehaviour
 {   
     [SerializeField]
