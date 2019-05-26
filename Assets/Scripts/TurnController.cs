@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Скрипт отвечающий за события окончания/начала хода
@@ -11,7 +11,7 @@ public class TurnController : MonoBehaviour
 
     public void EndTurn()
     {
-        TurnEndEvent();
-            // TurnStartEvent();
+        TurnEndEvent?.Invoke();
+        TurnStartEvent?.Invoke();
     }
 }
