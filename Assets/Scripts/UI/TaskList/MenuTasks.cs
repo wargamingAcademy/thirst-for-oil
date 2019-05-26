@@ -128,7 +128,7 @@ public class MenuTasks : MonoBehaviour
         {
             // Reinitialize widget in same place if it's objects key changed
             PoolSettingsSO taskInfoWidgetPoolSet = task.GetShortInfoPoolSet();
-            if (taskInfoWidgetPoolSet.KeyHash != taskShortInfoWidget.GetPoolSet().KeyHash)
+            if (taskInfoWidgetPoolSet.key != taskShortInfoWidget.GetPoolSet().key)
             {
                 int childIndex = taskShortInfoWidget.transform.GetSiblingIndex();
                 taskShortInfoWidget.ReturnToPool();
