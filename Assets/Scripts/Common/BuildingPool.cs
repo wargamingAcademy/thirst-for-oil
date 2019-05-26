@@ -30,7 +30,7 @@ public class BuildingPool : ObjectPool<BuildingPool, BuildingObject>
             obj.AddComponent<GraphicRaycaster>();
             Canvas canvas = obj.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 100;
+            canvas.sortingOrder = 3;
             objPool.prefab = prefab;
             objPool.initialPoolCount = initialPoolCount;
 
