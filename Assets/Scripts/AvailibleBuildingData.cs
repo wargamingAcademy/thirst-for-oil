@@ -102,6 +102,7 @@ public class AvailibleBuildingData : ScriptableObject
         if (isVisible)
         {
             availibleBuildingForShowTilemap.enabled = true;
+            uiController.HidePriceBuildingOnBar();
             uiController.ShowPriceBuildingOnBar(building.GetPrice() * Constants.ANCHOR_MAX_Y / 100);
         
         }
