@@ -1,3 +1,4 @@
+using System;
 ﻿using System.IO;
 using Assets.Scripts.Buildings;
 using UnityEngine;
@@ -6,13 +7,15 @@ using UnityEngine.Tilemaps;
 /// <summary>
 /// Базовый класс хранящий информацию о зданиях
 /// </summary>
+[Serializable]
 public abstract class GeneralBuilding
 {
     protected UIOilController uiController;
-    protected LevelManager levelManager;
+    public LevelManager levelManager;
     protected ResourceManager resourceManager;
     protected BuildingManager buildingManager;
     public Vector2Int Position { get; private set; }
+
    
     public GeneralBuilding()
     {
@@ -30,8 +33,8 @@ public abstract class GeneralBuilding
     /// <returns>true если успешно построили</returns>
     public bool ConstructBuilding(Vector2Int coordinate)
     {
-        Vector2Int position = new Vector2Int(coordinate.x - levelManager.resourceTilemap.tilemap.cellBounds.min.x, coordinate.y - levelManager.resourceTilemap.tilemap.cellBounds.min.y);
-        if (!IsCanBeBuild(position))
+        Vector2Int position = new Vector2Int(coordinate.x - levelManager.resourceData.tilemap.cellBounds.min.x, coordinate.y - levelManager.resourceData.tilemap.cellBounds.min.y);
+        if (!IsCanBeBuild(coordinate))
         {
             return false;
         }
@@ -40,10 +43,11 @@ public abstract class GeneralBuilding
         {
             return false;
         }
-        levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
-        levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
-        levelManager.resourceTilemap.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
-        Position=coordinate;
+        Position = coordinate;
+        levelManager.availibleBuildingData.IsAvailibleBuilding[coordinate.x-levelManager.offset.x, coordinate.y - levelManager.offset.y] = false;
+        levelManager.buildingData.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        levelManager.resourceData.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+       
         float priceBuilding= GetPrice();
         resourceManager.Oil -= priceBuilding;
         buildingManager.AddBuilding(this);
@@ -54,12 +58,13 @@ public abstract class GeneralBuilding
 
     public abstract TileBase GetTile();
     public abstract Sprite GetSprite();
-
+    public abstract Sprite GetSpriteIcon();
     /// <summary>
     /// Получить описание здания 
     /// </summary>
     public abstract string GetDescription();
 
+    public abstract string GetName();
     /// <summary>
     /// Стоимость здания в нефти
     /// </summary>
@@ -81,4 +86,11 @@ public abstract class GeneralBuilding
     /// </summary>
     public abstract void OnBuilding();
 
+    public abstract bool[,] GetAvailibleCells();
+
+    public bool CheckPosssibilityBuilding(Vector2Int position)
+    {
+        bool[,] cells = GetAvailibleCells();
+        return cells[position.x- levelManager.offset.x , position.y - levelManager.offset.y];
+    }
 }

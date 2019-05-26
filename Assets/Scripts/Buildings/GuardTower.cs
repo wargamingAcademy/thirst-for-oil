@@ -1,17 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
 using Assets.Scripts.Modificators.BuildingsModificators.PriceBuildingModificators;
+using Assets.Scripts.Constants;
 
+[Serializable]
 public class GuardTower : GeneralBuilding
 {
     public override TileBase GetTile()
     {
         return levelManager.GetTile(TileNames.GUARD_TOWER);
     }
+
     public override Sprite GetSprite()
     {
         return levelManager.GetSprite(TileNames.GUARD_TOWER);
+    }
+
+    public override Sprite GetSpriteIcon()
+    {
+        return levelManager.GetIconSprite(TileNames.GUARD_TOWER_ICON);
     }
 
     public override float GetPrice()
@@ -23,18 +32,18 @@ public class GuardTower : GeneralBuilding
 
     public override string GetDescription()
     {
-        return "Защищает вас от врагов";
+        return "Защищает вас от врагов.";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
     {
 
-        if (!(levelManager.resourceTilemap.Resources.GetLength(0) > position.x) ||
-            !(levelManager.resourceTilemap.Resources.GetLength(1) > position.y))
+        if (!(levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(0) > position.x) ||
+            !(levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(1) > position.y))
         {
             return false;
         }
-        if (levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] == true)
+        if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x-levelManager.offset.x, position.y - levelManager.offset.y] == true)
         {
             return true;
         }
@@ -50,5 +59,17 @@ public class GuardTower : GeneralBuilding
     public override void OnEndTurn()
     {
         throw new System.NotImplementedException();
+    }
+
+    public override bool[,] GetAvailibleCells()
+    {
+        return levelManager.availibleBuildingData.IsAvailibleBuilding;
+       // bool[,] result = new bool[levelManager.worldSize.x, levelManager.worldSize.y];
+
+    }
+
+    public override string GetName()
+    {
+       return NamesBuildingRus.GUARD_TOWER_NAME;
     }
 }
