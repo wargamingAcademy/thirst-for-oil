@@ -7,7 +7,7 @@ namespace PoolsManagement {
 
         public List<PoolSettingsSO> initialPools;
 
-        Dictionary<int, Pool> dictionary = new Dictionary<int, Pool>();
+        Dictionary<string, Pool> dictionary = new Dictionary<string, Pool>();
 
         private void OnEnable() {
             if (initialPools != null && initialPools.Count > 0) {
@@ -18,7 +18,7 @@ namespace PoolsManagement {
         }
 
         public Pool GetPoolPart(PoolSettingsSO poolSettings) {
-            Pool poolPart = GetPoolPart(poolSettings.KeyHash);
+            Pool poolPart = GetPoolPart(poolSettings.key);
             if (poolPart == null) {
                 poolPart = CreateNewPoolPart(poolSettings);
             }
@@ -26,12 +26,8 @@ namespace PoolsManagement {
         }
 
         public Pool GetPoolPart(string key) {
-            return GetPoolPart(key.GetHashCode());
-        }
-
-        public Pool GetPoolPart(int keyHash) {
             Pool poolPart = null;
-            dictionary.TryGetValue(keyHash, out poolPart);
+            dictionary.TryGetValue(key, out poolPart);
             return poolPart;
         }
 
@@ -39,7 +35,7 @@ namespace PoolsManagement {
             Transform newHolder = new GameObject("Holder_" + poolSet.key).transform;
             newHolder.SetParent(transform);
             Pool newPoolPart = new Pool(this, poolSet, newHolder);
-            dictionary.Add(poolSet.KeyHash, newPoolPart);
+            dictionary.Add(poolSet.key, newPoolPart);
             if (poolSet.GetPool() == null) {
                 poolSet.SetPool(newPoolPart);
             }

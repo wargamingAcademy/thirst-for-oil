@@ -20,6 +20,7 @@ public class BasicTaskWidget : PoolableObject
 
     TaskAnswerOption CreateAnswerOption(int index, AnswerOptionSet answerOptionSet)
     {
+        Debug.Log("Test " + index + " " + answerOptionSet.key);
         var answerOption = answerOptionSet.poolSet.GetNewObject(_answersContainer) as TaskAnswerOption;
         answerOption.SetValues(index, _task.GetAnswerText(index));
         answerOption.OnClickSubscribe(OptionSelected);
@@ -59,7 +60,7 @@ public class BasicTaskWidget : PoolableObject
             if (i < _answerOptions.Count)
             {
                 answerOption = _answerOptions[i];
-                if (answerOption.GetPoolSet().KeyHash != answerOptionsSets[i].poolSet.KeyHash)
+                if (answerOption.GetPoolSet().key != answerOptionsSets[i].poolSet.key)
                 {
                     answerOption.ReturnToPool();
 

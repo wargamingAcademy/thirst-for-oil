@@ -20,11 +20,6 @@ namespace PoolsManagement {
         [Tooltip("Initial pool size")]
         public int initialSize = 0;
 
-        /// <summary>
-        /// Hash of key field
-        /// </summary>
-        public int KeyHash { get; private set; }
-
         private Pool pool;
 
         /// <summary>
@@ -100,14 +95,6 @@ namespace PoolsManagement {
 
         private void OnDisable() {
             pool = null;
-        }
-
-        private void OnValidate() {
-            if (!string.IsNullOrEmpty(key)) {
-                KeyHash = key.GetHashCode();
-            } else {
-                KeyHash = 0;
-            }
         }
     }
 }
