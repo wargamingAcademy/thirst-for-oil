@@ -53,8 +53,17 @@ public class UIOilController : MonoBehaviour
         }
         else
         {
-            oilBarRect.anchorMax =
-                new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MAX_Y * normalizedPercent);
+            if ((Constants.ANCHOR_MAX_Y- Constants.ANCHOR_MIN_Y )* normalizedPercent+ Constants.ANCHOR_MIN_Y < Constants.ANCHOR_MIN_Y)
+            {
+                oilBarRect.anchorMax =
+                    new Vector2(oilBarRect.anchorMax.x, Constants.ANCHOR_MIN_Y);
+            }
+            else
+            {
+                oilBarRect.anchorMax =
+                    new Vector2(oilBarRect.anchorMax.x, (Constants.ANCHOR_MAX_Y - Constants.ANCHOR_MIN_Y) * normalizedPercent + Constants.ANCHOR_MIN_Y);
+            }
+          
         }
 
         float min = incomeOilBarRect.anchorMin.y;

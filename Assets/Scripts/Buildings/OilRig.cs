@@ -4,7 +4,6 @@ using UnityEngine.Tilemaps;
 
 public class OilRig : GeneralBuilding
 {
-    public const float AMOUNT_OIL_PRODUCING = 10; 
 
     public override TileBase GetTile()
     {
@@ -30,20 +29,20 @@ public class OilRig : GeneralBuilding
 
     public override string GetDescription()
     {
-        return "Добывает "+AMOUNT_OIL_PRODUCING+"ед. нефти в ход";
+        return "Добывает "+Prices.AMOUNT_OIL_PRODUCING+"ед. нефти в ход";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
     {   
         
-        if (!(levelManager.resourceData.Resources.GetLength(0) > position.x) ||
-            !(levelManager.resourceData.Resources.GetLength(1) > position.y))
+        if (!(levelManager.resourceData.Resources.GetLength(0) > position.x - levelManager.offset.x) ||
+            !(levelManager.resourceData.Resources.GetLength(1) > position.y - levelManager.offset.y))
         {
             return false;        
         }
-        if (levelManager.resourceData.Resources[position.x, position.y] == Resource.Oil)
+        if (levelManager.resourceData.Resources[position.x-levelManager.offset.x, position.y - levelManager.offset.y] == Resource.Oil)
         {
-            if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x, position.y] == true)
+            if (levelManager.availibleBuildingData.IsAvailibleBuilding[position.x - levelManager.offset.x, position.y - levelManager.offset.y] == true)
             {
                 return true;
             }
@@ -55,7 +54,7 @@ public class OilRig : GeneralBuilding
     {
         ModificatorManager.Instance.RegisterResourceModificator(new OilRigIncomeModificator());
         var modificator =(OilRigIncomeModificator) ModificatorManager.Instance.GetResourceModificator(new OilRigIncomeModificator());
-        resourceManager.IncomeOil +=modificator.GetOilIncome(AMOUNT_OIL_PRODUCING); 
+        resourceManager.IncomeOil +=modificator.GetOilIncome(Prices.AMOUNT_OIL_PRODUCING); 
     }
 
     public override void OnEndTurn()
@@ -65,6 +64,21 @@ public class OilRig : GeneralBuilding
 
     public override bool[,] GetAvailibleCells()
     {
-        throw new System.NotImplementedException();
+        bool[,] result=new bool[levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(0), levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(1)];
+        for (int i = 0; i < levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(0); i++)
+        {
+            for (int j=0;j<levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(1);j++)
+            {
+                if ((levelManager.resourceData.Resources[i, j] == Resource.Oil)&&levelManager.availibleBuildingData.IsAvailibleBuilding[i,j])
+                {
+                    result[i, j] = true;
+                }
+                else
+                {
+                    result[i, j] = false;
+                }
+            }
+        }
+        return result;
     }
 }

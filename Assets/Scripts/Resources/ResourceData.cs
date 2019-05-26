@@ -10,22 +10,23 @@ public class ResourceData : ScriptableObject
 {
     public Resource[,] Resources { get; set; }
     public Tilemap tilemap;
-
+    private LevelManager levelManager;
     public void Initialize()
     {
-        GameObject tilemapGameObject = GameObject.Find(ObjectnamesConstant.RESOURCE_TILEMAP);
+        levelManager = FindObjectOfType<LevelManager>();
+        var tilemapGameObject = GameObject.Find(ObjectnamesConstant.RESOURCE_TILEMAP);
         tilemap = tilemapGameObject.GetComponent<Tilemap>();
         if (tilemap == null)
         {
             throw new ArgumentNullException();
         }
         BoundsInt bounds = tilemap.cellBounds;
-        Resources = new Resource[tilemap.size.x, tilemap.size.y];
-        for (int x = 0; x < tilemap.size.x; x++)
+        Resources = new Resource[levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(0), levelManager.availibleBuildingData.IsAvailibleBuilding.GetLength(1)];
+        for (int x = 0; x < Resources.GetLength(0); x++)
         {
-            for (int y = 0; y < tilemap.size.y; y++)
+            for (int y = 0; y < Resources.GetLength(1); y++)
             {
-                TileBase tileBase = tilemap.GetTile(new Vector3Int(x + bounds.position.x, y + bounds.position.y, 0));
+                TileBase tileBase = tilemap.GetTile(new Vector3Int(x + levelManager.offset.x, y + levelManager.offset.y, 0));
                 if (tileBase == null)
                 {
                     continue;

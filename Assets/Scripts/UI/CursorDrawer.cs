@@ -21,7 +21,7 @@ public class CursorDrawer : MonoBehaviour
     private Camera camera;
     private Vector3 worldPosition;
     private LevelManager levelManager;
-
+    private bool lockBuild = false;
 
     
     private bool isBuildingStarted;
@@ -55,7 +55,7 @@ public class CursorDrawer : MonoBehaviour
         }
     }
 
-    void OnGUI()
+  /*  void OnGUI()
     {
         Vector2 mousePos = Input.mousePosition;
         GUI.Label(new Rect(100, 100, 200, 40),"x:"+ camera.ScreenToWorldPoint(mousePos).x+ " y:" + camera.ScreenToWorldPoint(mousePos).y);
@@ -72,7 +72,7 @@ public class CursorDrawer : MonoBehaviour
         GUI.Label(new Rect(100, 260, 200, 40), "worldPosition.x:" + worldPosition.x + " worldPosition.y:" + worldPosition.y);
         GUI.Label(new Rect(100, 290, 200, 40), "worldPosition.x:" + ((bounds.min.x - worldPosition.x)/hoverCellTilemap.cellSize.x) +
                                                " worldPosition.y:" + ((bounds.min.y - worldPosition.y) / hoverCellTilemap.cellSize.y));
-    }
+    }*/
     void Update()
     {
        
@@ -91,11 +91,17 @@ public class CursorDrawer : MonoBehaviour
                                 hoverCellTilemap.cellSize.x),
             (int)Math.Ceiling((worldPosition.y /*+ Constants.TILEMAP_OFFSET.y*/) /
                                 hoverCellTilemap.cellSize.y));
+        if (PlayerInput.Instance.CellSelected.Up)
+        {
+            lockBuild = false;
+        }
+
         if (!isBuildingStarted)
         {
             hoverCellTilemap.SetTile(new Vector3Int(cursorPosition.x-1, cursorPosition.y-1, 0), hoverCell);
             if (PlayerInput.Instance.CellSelected.Down)
             {
+                lockBuild = true;
                 currentSelectedTile = cursorPosition;
                 selectedCellTilemap.ClearAllTiles();
                 selectedCellTilemap.SetTile(new Vector3Int(cursorPosition.x - 1, cursorPosition.y - 1, 0), selectedCell);
@@ -107,10 +113,13 @@ public class CursorDrawer : MonoBehaviour
             {
                 hoverCellTilemap.SetTile(new Vector3Int(cursorPosition.x - 1, cursorPosition.y - 1, 0),
                     selectedForBuildingCellActive);
-                if (PlayerInput.Instance.CellSelected.Down)
+                if ((PlayerInput.Instance.CellSelected.Down)&&(!lockBuild))
                 {
-                    building.
-                    building.ConstructBuilding(currentSelectedTile);
+                    //building.Position = currentSelectedTile;
+                    building.ConstructBuilding(new Vector2Int(cursorPosition.x-1,cursorPosition.y-1));
+                   /* var cursorDrawer = FindObjectOfType<CursorDrawer>();
+                    var newBuilding = GetBuilding(building);
+                    newBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
                 }
             }
             else

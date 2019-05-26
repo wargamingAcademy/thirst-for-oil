@@ -43,10 +43,11 @@ public abstract class GeneralBuilding
         {
             return false;
         }
-        levelManager.availibleBuildingTilemap.IsAvailibleBuilding[position.x, position.y] = false;
-        levelManager.buildingTilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
-        levelManager.resourceTilemap.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
-        Position=coordinate;
+        Position = coordinate;
+        levelManager.availibleBuildingData.IsAvailibleBuilding[coordinate.x-levelManager.offset.x, coordinate.y - levelManager.offset.y] = false;
+        levelManager.buildingData.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0), this.GetTile());
+        levelManager.resourceData.tilemap.SetTile(new Vector3Int(coordinate.x, coordinate.y, 0),null);
+       
         float priceBuilding= GetPrice();
         resourceManager.Oil -= priceBuilding;
         buildingManager.AddBuilding(this);

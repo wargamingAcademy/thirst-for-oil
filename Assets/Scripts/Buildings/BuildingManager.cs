@@ -26,7 +26,7 @@ namespace Assets.Scripts.Buildings
             }
            float rnd= Random.Range(0, buildings.Count);
            int rndInt = Mathf.RoundToInt(rnd);          
-           levelManager.buildingTilemap.SetTile(new Vector3Int(buildings[rndInt].Position.x, buildings[rndInt].Position.y, 0), null);
+           levelManager.buildingData.SetTile(new Vector3Int(buildings[rndInt].Position.x, buildings[rndInt].Position.y, 0), null);
            buildings.RemoveAt(rndInt);
         }
 

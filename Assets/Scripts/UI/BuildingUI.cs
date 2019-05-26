@@ -48,9 +48,9 @@ public class BuildingUI : MonoBehaviour//,IPointerEnterHandler,IPointerExitHandl
        /* CursorDrawer cursorDrawer = FindObjectOfType<CursorDrawer>();
 
         generalBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
-        var cursorDrawer = FindObjectOfType<CursorDrawer>();
+        /*var cursorDrawer = FindObjectOfType<CursorDrawer>();
         var newBuilding = GetBuilding(building);
-        newBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);
+        newBuilding.ConstructBuilding(cursorDrawer.currentSelectedTile);*/
 
     }
 

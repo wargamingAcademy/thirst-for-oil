@@ -19,6 +19,8 @@ public class BuildInterfaceBuilder:MonoBehaviour
     private GameObject background;
     private BuildingPool buildingPool;
     private int page;
+    [SerializeField]
+    private Sprite emptyIcon;
 
     public void ShowBuildInterface()
     {        
@@ -84,7 +86,7 @@ public class BuildInterfaceBuilder:MonoBehaviour
             else
             {
                 buildingUI.building = Building.none;
-                button.image.sprite = null;              
+                button.image.sprite = emptyIcon;              
                 colors.normalColor = new Color(255, 255, 255,255);
                 buttonScript.colors = colors;
             }
