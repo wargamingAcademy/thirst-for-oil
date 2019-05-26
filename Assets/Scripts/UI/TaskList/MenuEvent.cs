@@ -62,6 +62,9 @@ public class MenuEvent : MonoBehaviour
             case TaskEventType.Changed:
                 _taskWidget.TaskUpdate(task);
                 break;
+            case TaskEventType.Supended:
+                HideMenu();
+                break;
             case TaskEventType.Removed:
                 HideMenu();
                 break;

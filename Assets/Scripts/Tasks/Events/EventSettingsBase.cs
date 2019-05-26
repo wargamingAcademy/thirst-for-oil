@@ -12,7 +12,6 @@ namespace Tasks
         protected float _minWeight;
         [SerializeField]
         protected float _maxWeight;
-
 #pragma warning restore CS0649
 
         public virtual bool isRandom { get {return true;} }

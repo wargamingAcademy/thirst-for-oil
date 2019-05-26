@@ -10,6 +10,7 @@ namespace Tasks
 
         static TaskManager _instance;
         List<ITask> _taskList = new List<ITask>();
+        List<ITask> _tasksForRemove = new List<ITask>();
 
         Action<TaskEventType,ITask> _onTaskChanged;
 
@@ -58,13 +59,12 @@ namespace Tasks
             _taskList.Add(newTask);
             newTask.Initialize(taskSettings);
             _onTaskChanged?.Invoke(TaskEventType.Added, newTask);
-            newTask.UpdateTask();
             return newTask;
         }
 
         public void RemoveTask(ITask task)
         {
-            _taskList.Remove(task);
+            _tasksForRemove.Add(task);
             _onTaskChanged?.Invoke(TaskEventType.Removed, task);
         }
 
@@ -73,8 +73,18 @@ namespace Tasks
             _onTaskChanged?.Invoke(TaskEventType.Changed, task);
         }
 
+        public void TaskSuspended(ITask task)
+        {
+            _onTaskChanged?.Invoke(TaskEventType.Supended, task);
+        }
+
         void UpdateTasks() // update every turn
         {
+            foreach (var task in _tasksForRemove)
+            {
+                _taskList.Remove(task);
+            }
+            _tasksForRemove.Clear();
             foreach (ITask task in _taskList)
             {
                 bool taskChanged = task.UpdateTask();
@@ -88,6 +98,7 @@ namespace Tasks
     {
         Added,
         Changed,
+        Supended,
         Removed
     }
 }

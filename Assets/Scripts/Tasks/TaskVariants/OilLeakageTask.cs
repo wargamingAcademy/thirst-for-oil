@@ -20,16 +20,15 @@ public class OilLeakageTask : BasicTask
 
     public override void PlayerAnwer(int index)
     {
+        if (_progress == 0)
+        {
+            ResourceManager.Instance.Oil -= _oilLeakage;
+        }
         base.PlayerAnwer(index);            
     }
 
     public override bool UpdateTask()
     {
-        if (_progress == 0)
-        {
-            ResourceManager.Instance.Oil -= _oilLeakage;
-            return true;
-        }
-        return false;
+        return true;
     }
 }
