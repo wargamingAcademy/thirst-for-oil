@@ -13,7 +13,7 @@ public class startingSceneController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButton("Jump") && Time.time > nextTextTime)
+        if ((Input.GetButton("Jump")||Input.GetMouseButton(0)) && Time.time > nextTextTime)
         {
             nextTextTime = Time.time + spaceRate;
             if (currentText < texts.Length)
