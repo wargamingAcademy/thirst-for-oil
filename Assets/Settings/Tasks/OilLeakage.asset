@@ -31,5 +31,5 @@ MonoBehaviour:
     - key: Ans1
       text: OK
       poolSet: {fileID: 11400000, guid: c132f1b75d8bd4e49b6a8d3e55063884, type: 2}
-  minOilLeakage: 10
-  maxOilLeakage: 30
+  minOilLeakage: 12
+  maxOilLeakage: 25
