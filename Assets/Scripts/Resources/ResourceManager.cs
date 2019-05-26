@@ -15,10 +15,11 @@ public class ResourceManager:MonoBehaviour
     public const float MAX_OIL = 100f;
     private float incomeOil;
     public delegate void MethodContainer(float oil);
+    public delegate void LoseWinDelegate();
     public static event MethodContainer OilChangeEvent;
     public static event MethodContainer IncomeChangeEvent;
-    public delegate void OnLoseDelegate();
-    public static event OnLoseDelegate LoseEvent;
+    public static event LoseWinDelegate WinEvent;
+    public static event LoseWinDelegate LoseEvent;
     private float oil;
     public void Awake()
     {
@@ -66,11 +67,13 @@ public class ResourceManager:MonoBehaviour
             if (value < 0)
             {
                 oil = 0;
+                LoseEvent();
             }
 
             if (value >MAX_OIL)
             {
                 oil = MAX_OIL;
+                WinEvent();
             }
 
             oil = value;
