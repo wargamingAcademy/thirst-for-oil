@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
@@ -70,6 +71,7 @@ public class BuildInterfaceBuilder:MonoBehaviour
             var buttonGO = building.instance.transform.GetChild(0);
             var buttonScript = buttonGO.GetComponent<Button>();
             var colors = buttonScript.colors;
+            var tooltip = building.instance.GetComponentInChildren<Tooltip>();
             if (countFilled > 0)
             {
                 countFilled--;
@@ -82,9 +84,11 @@ public class BuildInterfaceBuilder:MonoBehaviour
                 colors.normalColor = new Color(255, 255, 255, 255);
                 buttonScript.colors = colors;
                 button.onClick.AddListener(buildingUI.TaskOnClick);
+                tooltip.Enable();
             }
             else
             {
+                tooltip.Disable();
                 buildingUI.building = Building.none;
                 button.image.sprite = emptyIcon;              
                 colors.normalColor = new Color(255, 255, 255,255);
