@@ -31,7 +31,7 @@ public class OilRig : GeneralBuilding
     public override string GetDescription()
     {
         var modificator = (OilRigIncomeModificator)ModificatorManager.Instance.GetResourceModificator(new OilRigIncomeModificator());
-        return "Добывает ["+ modificator.GetOilIncome(Prices.AMOUNT_OIL_PRODUCING) + "] ед. нефти в ход.";
+        return "Добывает ["+ modificator.GetOilIncome(Prices.AMOUNT_OIL_PRODUCING).ToString("0.00") + "] ед. нефти в ход.";
     }
 
     public override bool IsCanBeBuild(Vector2Int position)
